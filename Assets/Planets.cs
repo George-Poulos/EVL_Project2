@@ -164,8 +164,8 @@ public class Planets : MonoBehaviour {
 		sunTextMesh.fontSize = 150;
 		sideSunText.transform.parent = thisSide.transform;
 
-		float innerHab = float.Parse (star[4]) * 9.5F;
-		float outerHab = float.Parse (star[4]) * 14F;
+		float innerHab = Mathf.Abs(float.Parse (star[4]) * 9.5F);
+		float outerHab = Mathf.Abs(float.Parse (star[4]) * 14F);
 
 
 		// need to take panelXScale into account for the hab zone
@@ -300,7 +300,6 @@ public class Planets : MonoBehaviour {
 	//------------------------------------------------------------------------------------//
 
 	void Start () {
-		PlanetParser p = new PlanetParser ("./Assets/planets.csv");
 		string[] sol = new string[5] { "695500", "Our Sun", "sol", "G2V" , "1.0"};
 
 		string[,] solPlanets = new string[8, 5] {
@@ -337,7 +336,6 @@ public class Planets : MonoBehaviour {
 		GameObject allCenter = new GameObject();
 		allCenter.name = "all systems";
 
-
 		var systemOffset = new Vector3 (0, 0, 0);
 		var oneOffset = new Vector3 (0, -30, 0);
 	
@@ -351,14 +349,44 @@ public class Planets : MonoBehaviour {
 
 		dealWithSystem (Gliese581, Gliese581Planets, systemOffset, allCenter);
 
-			
+		systemOffset += oneOffset;
+
+		PlanetParser p = new PlanetParser ("./Assets/planets.csv");
+		makeSystems (p.dict, allCenter, systemOffset, oneOffset);
+
 		allCenter.transform.localScale = new Vector3 (0.1F, 0.1F, 0.1F);
 	}
 
-	
+	void makeSystems(Dictionary<string, Dictionary<string, Planet>> systems, GameObject allCenter, Vector3 systemOffset, Vector3 oneOffset){
+		foreach (string system in systems.Keys) {
+			Dictionary<string, Planet> planets = systems [system];
+			string[] sun = new string[5]; 
+			int count = planets.Count;
+			string[,] planetArr = new string[count, 5];
+			int j = 0;
+			foreach (string planet in planets.Keys) {
+				string[] tmpSun = { 
+					planets [planet].star.radius, 
+					planets [planet].star.name, 
+					planets [planet].star.texture,
+					planets [planet].star.type,
+					planets [planet].star.brightness
+				};
+
+				planetArr [j, 0] = planets [planet].radiusOfOrbit;
+				planetArr [j, 1] = planets [planet].radiusOfPlanet;
+				planetArr [j, 2] = planets [planet].timeToOrbit;
+				planetArr [j, 3] = planets [planet].texture;
+				planetArr [j, 4] = planets [planet].planetLetter;
+
+				sun = tmpSun;
+				j++;
+			}
+			dealWithSystem (sun, planetArr, systemOffset, allCenter);
+			systemOffset += oneOffset;
+		}
+	}
 	// Update is called once per frame
 	void Update () {
-		
 	}
-
 }
