@@ -6,10 +6,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using JSONObject;
 
 public class Planets : MonoBehaviour {
-	
 	float panelHeight = 0.1F;
 	float panelWidth = 30.0F;
 	float panelDepth = 0.1F;
@@ -30,7 +28,6 @@ public class Planets : MonoBehaviour {
 		GameObject newOrbit;
 		GameObject orbits;
 
-	
 		newOrbit = new GameObject (orbitName);
 		newOrbit.AddComponent<Circle> ();
 		newOrbit.AddComponent<LineRenderer> ();
@@ -303,7 +300,7 @@ public class Planets : MonoBehaviour {
 	//------------------------------------------------------------------------------------//
 
 	void Start () {
-
+		PlanetParser p = new PlanetParser ("./Assets/planets.csv");
 		string[] sol = new string[5] { "695500", "Our Sun", "sol", "G2V" , "1.0"};
 
 		string[,] solPlanets = new string[8, 5] {
@@ -363,4 +360,5 @@ public class Planets : MonoBehaviour {
 	void Update () {
 		
 	}
+
 }
