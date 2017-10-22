@@ -11,13 +11,15 @@ public class Star
 	public string texture;
 	public char spectralType;
 
+	private const double STAR_RADIUS_CONVERT = 695700 ;
+
 	public Star (string[] starData)
 	{
 		this.brightness = string.IsNullOrEmpty(starData[225]) ? "0" : starData [225];
 		this.name = starData[1];
 		this.distanceAwayFromUs = string.IsNullOrEmpty(starData[42]) ? "0" : starData [42];
 		this.type = starData[216];
-		this.radius = string.IsNullOrEmpty(starData[64]) ? "0" : starData[64];
+		this.radius = string.IsNullOrEmpty(starData[64]) ? "0" : (Double.Parse(starData[64]) * STAR_RADIUS_CONVERT).ToString();
 		numberOfPlanets = string.IsNullOrEmpty(starData[4]) ? "0" : starData[4];
 
 		setTexture();
