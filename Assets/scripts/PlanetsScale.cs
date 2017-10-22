@@ -18,7 +18,7 @@ public class PlanetsScale : MonoBehaviour
     {
         if (isScaling)
         {
-            transform.localScale = new Vector3(originalSize * scale, originalSize * scaleVariable, originalSize * scaleVariable);
+            transform.localScale = new Vector3(originalSize * scale, originalSize * scale, originalSize * scale);
             //Debug.Log("Scaliiing");
         }
     }

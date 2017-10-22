@@ -13,7 +13,7 @@ public class PlanetPosition : MonoBehaviour {
         if (isScaling)
         {
             //transform.position = new Vector3(transform.position.x, 0.0f, originalPosition*positionVariable);
-            transform.localPosition = new Vector3(0.0f, 0.0f, (originalPosition * positionVariable));
+            transform.localPosition = new Vector3(0.0f, 0.0f, (originalPosition * position));
         }	
 	}
 }
