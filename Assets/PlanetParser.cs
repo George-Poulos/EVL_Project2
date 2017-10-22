@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class PlanetParser
 {
-	public Dictionary<string, Dictionary<string, Planet>> dict = new Dictionary<string, Dictionary<string,Planet>>();
+	public Dictionary<string, SolarSystem> dict = new Dictionary<string, SolarSystem>();
 
 	public PlanetParser (string fileName)
 	{
@@ -17,12 +17,11 @@ public class PlanetParser
 				keys = items;
 			}
 			else{
-				Dictionary<string, Planet> tmp = new Dictionary<string,Planet> ();
-				tmp.Add (items [2], new Planet(items));
 				if (dict.ContainsKey (items [1])) {
-					dict [items [1]].Add (items[2],new Planet(items));
+					dict [items [1]].addPlanet(new Planet(items));
 				} else {
-					dict.Add (items [1], tmp);
+					dict.Add (items [1], new SolarSystem(new Star(items)));
+					dict [items [1]].addPlanet (new Planet (items));
 				}
 			}
 			i++;
