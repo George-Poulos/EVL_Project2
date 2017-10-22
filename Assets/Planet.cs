@@ -99,7 +99,14 @@ public class Planet
 		float massDouble = this.mass;
 
 		if (massDouble <= 0) {
-			texture = "";	
+			if (this.radiusOfPlanet < 10000)
+				this.texture = "uranus";
+			else if (this.radiusOfPlanet < 20000)
+				this.texture = "neptune";
+			else if (this.radiusOfPlanet < 30000)
+				this.texture = "saturn";
+			else
+				texture = "jupiter";
 		} 
 		else {
 			if (massDouble < 0.05) {
