@@ -357,40 +357,40 @@ public class Planets2d : MonoBehaviour {
 		systemOffset += oneOffset;
 
 		PlanetParser p = new PlanetParser ("./Assets/planets.csv");
-		makeSystems (p.dict, allCenter, systemOffset, oneOffset);
+		// makeSystems (p.dict, allCenter, systemOffset, oneOffset);
 
 		allCenter.transform.localScale = new Vector3 (0.1F, 0.1F, 0.1F);
 	}
 
-	void makeSystems(Dictionary<string, SolarSystem> systems, GameObject allCenter, Vector3 systemOffset, Vector3 oneOffset){
-		foreach (string system in systems.Keys) {
-			SolarSystem solarSystem = systems [system];
-			string[] sun = new string[5]; 
-			int count = solarSystem.numOfPlanets;
-			string[,] planetArr = new string[count, 5];
-			int j = 0;
-			foreach (Planet planet in solarSystem.planets) {
-				string[] tmpSun = { 
-					solarSystem.star.radius, 
-					solarSystem.star.name, 
-					solarSystem.star.texture,
-					solarSystem.star.type,
-					solarSystem.star.brightness
-				} ;
+	// void makeSystems(Dictionary<string, SolarSystem> systems, GameObject allCenter, Vector3 systemOffset, Vector3 oneOffset){
+	// 	foreach (string system in systems.Keys) {
+	// 		SolarSystem solarSystem = systems [system];
+	// 		string[] sun = new string[5]; 
+	// 		int count = solarSystem.numOfPlanets;
+	// 		string[,] planetArr = new string[count, 5];
+	// 		int j = 0;
+	// 		foreach (Planet planet in solarSystem.planets) {
+	// 			string[] tmpSun = { 
+	// 				solarSystem.star.radius, 
+	// 				solarSystem.star.name, 
+	// 				solarSystem.star.texture,
+	// 				solarSystem.star.type,
+	// 				solarSystem.star.brightness
+	// 			} ;
 
-				planetArr [j, 0] = planet.radiusOfOrbit;
-				planetArr [j, 1] = planet.radiusOfPlanet;
-				planetArr [j, 2] = planet.timeToOrbit;
-				planetArr [j, 3] = planet.texture;
-				planetArr [j, 4] = planet.planetLetter;
+	// 			planetArr [j, 0] = planet.radiusOfOrbit;
+	// 			planetArr [j, 1] = planet.radiusOfPlanet;
+	// 			planetArr [j, 2] = planet.timeToOrbit;
+	// 			planetArr [j, 3] = planet.texture;
+	// 			planetArr [j, 4] = planet.planetLetter;
 
-				sun = tmpSun;
-				j++;
-			}
-			dealWithSystem (sun, planetArr, systemOffset, allCenter);
-			systemOffset += oneOffset;
-		}
-	}
+	// 			sun = tmpSun;
+	// 			j++;
+	// 		}
+	// 		dealWithSystem (sun, planetArr, systemOffset, allCenter);
+	// 		systemOffset += oneOffset;
+	// 	}
+	// }
 
 	// Update is called once per frame
 	void Update () {

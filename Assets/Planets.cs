@@ -306,93 +306,89 @@ public class Planets : MonoBehaviour {
 
 	void Start () {
 
-		string[] sol = new string[5] { "695500", "Our Sun", "sol", "G2V" , "1.0"};
+		// string[] sol = new string[5] { "695500", "Our Sun", "sol", "G2V" , "1.0"};
 
-		string[,] solPlanets = new string[8, 5] {
-			{   "57910000",  "2440",    "0.24", "mercury", "mercury" },
-			{  "108200000",  "6052",    "0.62", "venus",   "venus" },
-			{  "149600000",  "6371",    "1.00", "earthmap", "earth" },
-			{  "227900000",  "3400",    "1.88", "mars",     "mars" },
-			{  "778500000", "69911",   "11.86", "jupiter", "jupiter" },
-			{ "1433000000", "58232",   "29.46", "saturn",   "saturn" },
-			{ "2877000000", "25362",   "84.01", "neptune", "uranus" },
-			{ "4503000000", "24622",  "164.80", "uranus", "neptune" }
-		};
-
-
-		string[] TauCeti = new string[5] { "556400", "Tau Ceti", "gstar", "G8.5V" , "0.52"};
-
-		string[,] TauCetiPlanets = new string[5, 5] {
-			{ "15707776",  "9009",   "0.04", "venus",   "b" },
-			{ "29171585", "11217",   "0.09", "venus", "c" },
-			{ "55949604", "12088",   "0.26", "mercury",  "d" },
-			{ "82578024", "13211",   "0.46", "mercury", "e" },
-			{"201957126", "16454",   "1.75", "uranus",  "f" }
-		};
+		// string[,] solPlanets = new string[8, 5] {
+		// 	{   "57910000",  "2440",    "0.24", "mercury", "mercury" },
+		// 	{  "108200000",  "6052",    "0.62", "venus",   "venus" },
+		// 	{  "149600000",  "6371",    "1.00", "earthmap", "earth" },
+		// 	{  "227900000",  "3400",    "1.88", "mars",     "mars" },
+		// 	{  "778500000", "69911",   "11.86", "jupiter", "jupiter" },
+		// 	{ "1433000000", "58232",   "29.46", "saturn",   "saturn" },
+		// 	{ "2877000000", "25362",   "84.01", "neptune", "uranus" },
+		// 	{ "4503000000", "24622",  "164.80", "uranus", "neptune" }
+		// };
 
 
-		string[] Gliese581 = new string[5] { "201750", "Gliese 581", "mstar", "M3V" , "0.013"};
+		// string[] TauCeti = new string[5] { "556400", "Tau Ceti", "gstar", "G8.5V" , "0.52"};
 
-		string[,] Gliese581Planets = new string[3, 5] {
-			{ "4188740",  "8919",   "0.009", "venus",   "e" },
-			{ "6133513", "30554",   "0.014", "jupiter",   "b" },
-			{"10920645", "20147",   "0.18", "neptune",  "c" }
-		};
+		// string[,] TauCetiPlanets = new string[5, 5] {
+		// 	{ "15707776",  "9009",   "0.04", "venus",   "b" },
+		// 	{ "29171585", "11217",   "0.09", "venus", "c" },
+		// 	{ "55949604", "12088",   "0.26", "mercury",  "d" },
+		// 	{ "82578024", "13211",   "0.46", "mercury", "e" },
+		// 	{"201957126", "16454",   "1.75", "uranus",  "f" }
+		// };
 
-		GameObject allCenter = new GameObject();
-		allCenter.name = "all systems";
+
+		// string[] Gliese581 = new string[5] { "201750", "Gliese 581", "mstar", "M3V" , "0.013"};
+
+		// string[,] Gliese581Planets = new string[3, 5] {
+		// 	{ "4188740",  "8919",   "0.009", "venus",   "e" },
+		// 	{ "6133513", "30554",   "0.014", "jupiter",   "b" },
+		// 	{"10920645", "20147",   "0.18", "neptune",  "c" }
+		// };
+
+		// GameObject allCenter = new GameObject();
+		// allCenter.name = "all systems";
 
 
-		var systemOffset = new Vector3 (0, 0, 0);
-		var oneOffset = new Vector3 (0, -30, 0);
+		// var systemOffset = new Vector3 (0, 0, 0);
+		// var oneOffset = new Vector3 (0, -30, 0);
 
-		dealWithSystem (sol, solPlanets, systemOffset, allCenter);
+		// dealWithSystem (sol, solPlanets, systemOffset, allCenter);
 
-		systemOffset += oneOffset;
+		// systemOffset += oneOffset;
 
-		dealWithSystem (TauCeti, TauCetiPlanets, systemOffset, allCenter);
+		// dealWithSystem (TauCeti, TauCetiPlanets, systemOffset, allCenter);
 
-		systemOffset += oneOffset;
+		// systemOffset += oneOffset;
 
-		dealWithSystem (Gliese581, Gliese581Planets, systemOffset, allCenter);
+		// dealWithSystem (Gliese581, Gliese581Planets, systemOffset, allCenter);
 
-		systemOffset += oneOffset;
+		// systemOffset += oneOffset;
 
 		PlanetParser p = new PlanetParser ("./Assets/planets.csv");
-		makeSystems (p.dict, allCenter, systemOffset, oneOffset);
+		// makeSystems (p.dict, allCenter, systemOffset, oneOffset);
 
-		allCenter.transform.localScale = new Vector3 (0.1F, 0.1F, 0.1F);
+		// allCenter.transform.localScale = new Vector3 (0.1F, 0.1F, 0.1F);
 	}
 
-	void makeSystems(Dictionary<string, SolarSystem> systems, GameObject allCenter, Vector3 systemOffset, Vector3 oneOffset){
-		foreach (string system in systems.Keys) {
-			SolarSystem solarSystem = systems [system];
-			string[] sun = new string[5]; 
-			int count = solarSystem.numOfPlanets;
-			string[,] planetArr = new string[count, 5];
-			int j = 0;
-			foreach (Planet planet in solarSystem.planets) {
-				string[] tmpSun = { 
-					solarSystem.star.radius, 
-					solarSystem.star.name, 
-					solarSystem.star.texture,
-					solarSystem.star.type,
-					solarSystem.star.brightness
-				} ;
+	// void makeSystems(Dictionary<string, SolarSystem> systems, GameObject allCenter, Vector3 systemOffset, Vector3 oneOffset){
+	// 	foreach (var solarSystem in systems.Values) {
+	// 		string[] sun = { 
+	// 			solarSystem.star.radius, 
+	// 			solarSystem.star.name, 
+	// 			solarSystem.star.texture,
+	// 			solarSystem.star.type,
+	// 			solarSystem.star.brightness
+	// 		}; 
+	// 		int count = solarSystem.numOfPlanets;
+	// 		string[,] planetArr = new string[count, 5];
+	// 		int j = 0;
+	// 		foreach (Planet planet in solarSystem.planets) {
+	// 			planetArr [j, 0] = planet.radiusOfOrbit;
+	// 			planetArr [j, 1] = planet.radiusOfPlanet;
+	// 			planetArr [j, 2] = planet.timeToOrbit;
+	// 			planetArr [j, 3] = planet.texture;
+	// 			planetArr [j, 4] = planet.planetLetter;
 
-				planetArr [j, 0] = planet.radiusOfOrbit;
-				planetArr [j, 1] = planet.radiusOfPlanet;
-				planetArr [j, 2] = planet.timeToOrbit;
-				planetArr [j, 3] = planet.texture;
-				planetArr [j, 4] = planet.planetLetter;
-
-				sun = tmpSun;
-				j++;
-			}
-			dealWithSystem (sun, planetArr, systemOffset, allCenter);
-			systemOffset += oneOffset;
-		}
-	}
+	// 			j++;
+	// 		}
+	// 		dealWithSystem (sun, planetArr, systemOffset, allCenter);
+	// 		systemOffset += oneOffset;
+	// 	}
+	// }
 
 	// Update is called once per frame
 	void Update () {
