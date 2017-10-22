@@ -1,50 +1,94 @@
 ﻿using System;
+using UnityEngine;
 
 public class Planet
 {
-	public string radiusOfPlanet; 
-	public string radiusOfOrbit;
+	public GameObject root, planet, orbit;
+
+	public float rotateScale = 0.2F;
+	public float distanceScale = 10.0F;
+	public float planetSizeScale = 10000.0F;
+	public float radiusOfPlanet; 
+	public float radiusOfOrbit;
 	public string planetLetter;
-	public string mass; 
+	public float mass; 
 	public string name;
 	public string discovered;
 	public Star star;
-	public string timeToOrbit; 
+	public float timeToOrbit; 
 
 	public string texture;
 
 	public bool errorMassRadius;  
 
-	private const double AU_TO_KM = 149597870.7;
-	private const double JUPITER_RADIUS_TO_KM = 69911;
-	private const double YEAR_TO_DAYS = 365.2422; 
+	private const float AU_TO_KM = 149597870.7F;
+	private const float JUPITER_RADIUS_TO_KM = 69911F;
+	private const float YEAR_TO_DAYS = 365.2422F; 
+	private const float ORBIT_WIDTH = 0.01F;
 
 
-	public Planet (string [] data)
+	public Planet (string [] data, Star star, Transform parent)
 	{
-		this.radiusOfOrbit = string.IsNullOrEmpty(data[9]) ? "0.0" : (Double.Parse (data [9]) * AU_TO_KM).ToString();
-		this.radiusOfPlanet = string.IsNullOrEmpty(data[26]) ? "0.0" : (Double.Parse (data [26]) * JUPITER_RADIUS_TO_KM).ToString();
-		this.mass = string.IsNullOrEmpty(data[21]) ? "0" : data [21];
+		this.radiusOfOrbit = string.IsNullOrEmpty(data[9]) ? 0.0F : float.Parse (data [9]);
+		this.radiusOfPlanet = string.IsNullOrEmpty(data[26]) ? 0.0F : float.Parse (data [26]) * JUPITER_RADIUS_TO_KM;
+		this.mass = string.IsNullOrEmpty(data[21]) ? 0.0F : float.Parse(data [21]);
 		this.name = data [70];
 		this.discovered = data [3];
 		this.planetLetter = data [2];
-		this.star = new Star (data);
-		this.timeToOrbit = string.IsNullOrEmpty(data[5]) ? "0" : (Double.Parse(data[5])/YEAR_TO_DAYS).ToString();
+		this.star = star;
+		this.timeToOrbit = string.IsNullOrEmpty(data[5]) ? 0.0F : float.Parse(data[5])/YEAR_TO_DAYS;
 		this.errorMassRadius = setMassRadius();
 		setTexture ();
+		setupGameStuff(parent);
+	}
+
+	private void setupGameStuff(Transform parent) {
+		float scaledSize = this.radiusOfPlanet / this.planetSizeScale;
+		float scaledRadius = this.radiusOfOrbit * this.distanceScale;
+		float scaledSpeed = -1.0F / this.timeToOrbit * this.rotateScale;
+
+		root = new GameObject(this.planetLetter + "Center");
+		root.AddComponent<rotate>();
+		root.GetComponent<rotate>().rotateSpeed = scaledSpeed;
+
+		planet = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+		planet.name = this.planetLetter;
+		planet.transform.position = new Vector3(0, 0, scaledRadius);
+		planet.transform.localScale = new Vector3(scaledSize, scaledSize, scaledSize);
+		planet.transform.parent = root.transform;
+
+		Material planetMaterial = new Material(Shader.Find("Standard"));
+		planet.GetComponent<MeshRenderer>().material = planetMaterial;
+		planetMaterial.mainTexture = Resources.Load(this.texture) as Texture;
+
+		orbit = new GameObject(this.planetLetter + " orbit");
+		orbit.AddComponent<Circle>();
+		orbit.AddComponent<LineRenderer>();
+		orbit.GetComponent<Circle>().xradius = scaledRadius;
+		orbit.GetComponent<Circle>().yradius = scaledRadius;
+
+		var line = orbit.GetComponent<LineRenderer>();
+		line.startWidth = ORBIT_WIDTH;
+		line.endWidth = ORBIT_WIDTH;
+		line.useWorldSpace = false;
+
+		orbit.GetComponent<LineRenderer>().material.color = Color.white;
+		orbit.transform.parent = root.transform;
+
+		root.transform.parent = parent;
 	}
 
 	private bool setMassRadius() {
-		double massDouble = string.IsNullOrEmpty(this.mass) ? 0 : Double.Parse (this.mass);
-		double radius = string.IsNullOrEmpty(this.radiusOfOrbit) ? 0 : Double.Parse (this.radiusOfOrbit);
-		double radiusPlanet = string.IsNullOrEmpty(this.radiusOfPlanet) ? 0 : Double.Parse (this.radiusOfPlanet);
+		float massDouble = this.mass;
+		float radius = this.radiusOfOrbit;
+		float radiusPlanet = this.radiusOfPlanet;
 		if ((massDouble <= 0) && (radiusPlanet <= 0)) {
 			return true;
 		} else {
 			if (massDouble <= 0) {
-				massDouble = 0.00672 * Math.Exp(0.0000706 * (radiusPlanet));
+				massDouble = (float)(0.00672F * Math.Exp(0.0000706F * (radiusPlanet)));
 			} else if (radius <= 0) {
-				radius = 72483+(15496 * Math.Log(massDouble));
+				radius = (float)(72483+(15496 * Math.Log(massDouble)));
 			}
 		}
 		return false;
@@ -52,7 +96,7 @@ public class Planet
 
 	private void setTexture() {
 		// Set the texture based on the radius/mass
-		double massDouble = string.IsNullOrEmpty(this.mass) ? 0 : Double.Parse (this.mass);
+		float massDouble = this.mass;
 
 		if (massDouble <= 0) {
 			texture = "";	
