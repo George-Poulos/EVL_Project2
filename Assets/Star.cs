@@ -13,6 +13,9 @@ public class Star
 
 	private const double STAR_RADIUS_CONVERT = 695700 ;
 
+	/**
+	 * Constructor for screating a Star 
+	 */
 	public Star (string[] starData)
 	{
 		this.brightness = string.IsNullOrEmpty(starData[225]) ? "0" : starData [225];
@@ -70,6 +73,7 @@ public class Star
 				break;
 			default:
 				//Debug.LogError("Invalid Spectral Type: " + spectralType);
+				texture = "bstar";
 				break;
 			}
 

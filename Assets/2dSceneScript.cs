@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Planets : MonoBehaviour {
+public class Planets2d : MonoBehaviour {
 
 	float panelHeight = 0.1F;
 	float panelWidth = 30.0F;
@@ -67,7 +67,7 @@ public class Planets : MonoBehaviour {
 
 		for (planetCounter = 0; planetCounter < planets.GetLength(0); planetCounter++) {
 
-			float planetDistance = float.Parse (planets [planetCounter, 0]) / (149600000.0F) * 10.0F;
+			float planetDistance = float.Parse (planets [planetCounter, 0]) / 149600000.0F * 10.0F;
 			float planetSize = float.Parse (planets [planetCounter, 1]) * 2.0F / 10000.0F;
 			float planetSpeed = -1.0F / float.Parse (planets [planetCounter, 2]) * revolutionSpeed;
 			string textureName = planets [planetCounter, 3];
@@ -281,8 +281,6 @@ public class Planets : MonoBehaviour {
 		SunStuff.transform.parent = SolarCenter.transform;
 		Planets.transform.parent = SolarCenter.transform;
 
-		dealWithStar (starInfo, SunStuff, AllOrbits);
-		dealWithPlanets (planetInfo, Planets, AllOrbits);
 
 		// need to do this last
 		SolarCenter.transform.position = offset;

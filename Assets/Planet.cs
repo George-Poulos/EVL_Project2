@@ -22,8 +22,8 @@ public class Planet
 
 	public Planet (string [] data)
 	{
-		this.radiusOfOrbit = string.IsNullOrEmpty(data[9]) ? "0" : (Double.Parse (data [9]) * AU_TO_KM).ToString();
-		this.radiusOfPlanet = string.IsNullOrEmpty(data[26]) ? "0" : (Double.Parse (data [26]) * JUPITER_RADIUS_TO_KM).ToString();
+		this.radiusOfOrbit = string.IsNullOrEmpty(data[9]) ? "0.0" : (Double.Parse (data [9]) * AU_TO_KM).ToString();
+		this.radiusOfPlanet = string.IsNullOrEmpty(data[26]) ? "0.0" : (Double.Parse (data [26]) * JUPITER_RADIUS_TO_KM).ToString();
 		this.mass = string.IsNullOrEmpty(data[21]) ? "0" : data [21];
 		this.name = data [70];
 		this.discovered = data [3];
