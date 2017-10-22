@@ -20,9 +20,12 @@ public class SystemsScale : MonoBehaviour
         if (isScaling)
         {
             transform.localScale = new Vector3(originalSize * scale, transform.localScale.y, originalSize * scale);
+<<<<<<< HEAD
             ///transform.GetComponent<Circle>().xradius = originalSize * scaleVariable;
            // transform.GetComponent<Circle>().yradius = originalSize * scaleVariable;
             //Debug.Log("Scaliiing");
+=======
+>>>>>>> 03f51dfc45577a0d65ece78e2ad9b4c915992484
         }
     }
 }
