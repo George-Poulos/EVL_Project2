@@ -84,5 +84,6 @@ public class LaserTest : MonoBehaviour
         shouldActivate = false;
         //get and activate target
         hit.transform.gameObject.SendMessage("Activate");
+        hit = new RaycastHit();
     }
 }

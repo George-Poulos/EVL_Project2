@@ -14,6 +14,7 @@ public class SolarSystem
 	{
 		solarSystem = new GameObject();
 		sideSystem = new GameObject();
+		sideSystem.layer = 8;
 		this.star = new Star(starItems, solarSystem.transform, sideSystem.transform);
 		
 		sideSystem.AddComponent<BoxCollider>();
@@ -35,6 +36,7 @@ public class SolarSystem
 	public SolarSystem(string name, string discovered, float brightness, string texture, string type, float radius, int numberOfPlanets, string distanceAwayFromUs, Transform parent, Transform sideView) {
 		solarSystem = new GameObject();
 		sideSystem = new GameObject();
+		sideSystem.layer = 8;
 		this.star = new Star(name, discovered, brightness, texture, type, 
 			radius, numberOfPlanets, distanceAwayFromUs, solarSystem.transform, 
 			sideSystem.transform);
