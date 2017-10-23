@@ -15,6 +15,15 @@ public class SolarSystem
 		solarSystem = new GameObject();
 		sideSystem = new GameObject();
 		this.star = new Star(starItems, solarSystem.transform, sideSystem.transform);
+		
+		sideSystem.AddComponent<BoxCollider>();
+		var collider = sideSystem.GetComponent<BoxCollider>();
+		collider.isTrigger = true;
+
+		sideSystem.AddComponent<ToggleOnTrigger>();
+		var script = sideSystem.GetComponent<ToggleOnTrigger>();
+		script.target = this;
+
 		solarSystem.name = star.name;
 		sideSystem.name = star.name + " side view";
 		this.numOfPlanets = star.numberOfPlanets;
@@ -48,7 +57,7 @@ public class SolarSystem
 	}
 
 	public void set2dPosition(Vector3 position) {
-		sideSystem.transform.position = position;
+		sideSystem.transform.localPosition = position;
 	}
 
 	public void setOrbitScale(float newScale) {

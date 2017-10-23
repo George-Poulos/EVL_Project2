@@ -50,7 +50,7 @@ public class PlanetParser
 					dict[items[1]].addPlanet(items);
 				} else {
 					SolarSystem system = new SolarSystem(items, universe.transform, sideMenu.View.transform);
-					sideMenu.menu.Add(system);
+					sideMenu.addSolarSystem(system);
 					dict.Add(items [1], system);
 					system.addPlanet(items);
 				}
@@ -59,6 +59,7 @@ public class PlanetParser
 		foreach(var system in dict.Values) {
 			if(system.star.name != "Our Sun")
 				system.set3dPosition(oneOffset);
+				system.solarSystem.SetActive(false);
 		}
 	}
 
@@ -84,7 +85,6 @@ public class PlanetParser
 			);
 		}
 		ourSystem.set3dPosition(systemOffset);
-		ourSystem.set2dPosition(new Vector3 (0, 8, 0));
 		return ourSystem;
 	}
 }
