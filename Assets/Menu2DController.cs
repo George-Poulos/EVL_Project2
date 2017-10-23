@@ -38,6 +38,7 @@ public class Menu2DController {
 		ret.transform.parent = View.transform;
 		ret.transform.localScale = buttonScale;
 		ret.transform.localPosition = position;
+		ret.layer = 8;
 		var collider = ret.GetComponent<BoxCollider>();
 		collider.isTrigger = true;
 		ret.GetComponent<MeshRenderer>().material = buttonMaterial;

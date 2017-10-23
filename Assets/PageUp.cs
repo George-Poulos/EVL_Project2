@@ -8,4 +8,8 @@ public class PageUp : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		menu.pgUp();
     }
+
+    void Activate() {
+    	menu.pgUp();
+    }
 }
