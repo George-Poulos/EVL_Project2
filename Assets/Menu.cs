@@ -18,7 +18,7 @@ public class Menu : MonoBehaviour
 	float planetSizePrevVal;
 
 	PlanetParser p;
-	bool enabled = false;
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -62,7 +62,7 @@ public class Menu : MonoBehaviour
 		}
 
 		if (this.planetSizeVal != this.planetSizePrevVal) {
-			this.p.setSpeedValueAll (this.planetSizeVal);
+			this.p.setSizeScaleAll (this.planetSizeVal);
 		}
 
 		if (this.speedVal != this.speedPrevVal) {

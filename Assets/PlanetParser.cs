@@ -102,5 +102,11 @@ public class PlanetParser
 			system.setRevoScale (newScale);
 		}
 	}
+
+	public void setSizeScaleAll(float newScale){
+		foreach(var system in dict.Values){
+			system.setSizeScale (newScale);
+		}
+	}
 }
 
