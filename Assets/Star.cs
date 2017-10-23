@@ -21,7 +21,7 @@ public class Star
 	private const float STAR_RADIUS_CONVERT = 695700F;
 	private const float SUN_SCALE_CONSTANT = 100000F;
 	private const float HAB_WIDTH = 0.03F;
-	private const float PANEL_Z = 20F;
+	private const float PANEL_Z = 0F;
 	private const float PANEL_WIDTH = 30.0F;
 	private const float PANEL_HEIGHT = 0.1F;
 	private const float PANEL_DEPTH = 0.1F;
@@ -151,6 +151,7 @@ public class Star
 
 		habZone = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		habZone.name = "Hab";
+		habZone.transform.position = new Vector3(0, 0, 0);
 		habZone.transform.parent = parentSide.transform;
 		init2dHab();
 
@@ -173,7 +174,9 @@ public class Star
 	private void init2dHab() {
 		float beginEdge = Mathf.Abs(this.brightness * 9.5F);
 		float endEdge = Mathf.Abs(this.brightness * 14F);
-		habZone.transform.position = new Vector3 ((-0.5F * PANEL_WIDTH) + ((beginEdge+endEdge) * 0.5F * this.radiusScale), 0, PANEL_Z);
+		Vector3 oldPosition = habZone.transform.position;
+		oldPosition[0] = (-0.5F * PANEL_WIDTH) + ((beginEdge+endEdge) * 0.5F * this.radiusScale);
+		habZone.transform.position = oldPosition;
 		habZone.transform.localScale = new Vector3 ((endEdge - beginEdge)* this.radiusScale, 40.0F * PANEL_HEIGHT, 2.0F * PANEL_DEPTH);
 	}
 

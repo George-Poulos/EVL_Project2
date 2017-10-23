@@ -32,7 +32,6 @@ public class SolarSystem
 		this.numOfPlanets = star.numberOfPlanets;
 		solarSystem.transform.parent = parent;
 		sideSystem.transform.parent = sideView;
-		sideSystem.transform.position = new Vector3 (0, 8, 10.0F);
 	}
 
 	public void addPlanet(String[] planetItems){
@@ -44,8 +43,12 @@ public class SolarSystem
 			texture, timeToOrbit, this.star, solarSystem.transform));
 	}
 
-	public void setPosition(Vector3 position) {
+	public void set3dPosition(Vector3 position) {
 		solarSystem.transform.position = position;
+	}
+
+	public void set2dPosition(Vector3 position) {
+		sideSystem.transform.position = position;
 	}
 
 	public void setOrbitScale(float newScale) {

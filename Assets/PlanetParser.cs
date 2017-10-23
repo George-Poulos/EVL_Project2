@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlanetParser
 {
 	public Dictionary<string, SolarSystem> dict = new Dictionary<string, SolarSystem>();
+	public Menu2DController sideMenu;
+
 	private float[] solOrbit = new float[8] {
 		57910000, 108200000, 149600000, 227900000, 778500000, 1433000000, 2877000000, 4503000000
 	};
@@ -28,7 +30,7 @@ public class PlanetParser
 	public PlanetParser (string fileName)
 	{
 		GameObject universe = new GameObject("Universe");
-		Menu2DController sideMenu = new Menu2DController();
+		sideMenu = new Menu2DController();
 	
 		var ourSystem = createSol(universe, sideMenu.View);
 		dict.Add("Our Sun", ourSystem);
@@ -56,7 +58,7 @@ public class PlanetParser
 		}
 		foreach(var system in dict.Values) {
 			if(system.star.name != "Our Sun")
-				system.setPosition(oneOffset);
+				system.set3dPosition(oneOffset);
 		}
 	}
 
@@ -81,7 +83,8 @@ public class PlanetParser
 				solTime[i]
 			);
 		}
-		ourSystem.setPosition(systemOffset);
+		ourSystem.set3dPosition(systemOffset);
+		ourSystem.set2dPosition(new Vector3 (0, 8, 0));
 		return ourSystem;
 	}
 }

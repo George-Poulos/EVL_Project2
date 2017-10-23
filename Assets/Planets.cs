@@ -153,6 +153,10 @@ public class Planets : MonoBehaviour {
 			system.solarSystem.SetActive(false);
 		}
 		p.dict["Our Sun"].solarSystem.SetActive(true);
+		p.dict["Our Sun"].setOrbitScale(4.0F);
+		p.sideMenu.updateMenu();
+		p.sideMenu.setMenuPosition(new Vector3(0, 10, 30));
+		//p.dict["Our Sun"].set2dPosition(new Vector3 (0, 8, 0));
 		p.dict["KOI-351"].solarSystem.SetActive(true);
 		//p.dict["TRAPPIST-1"].setOrbitScale(50.0F);
 	}
