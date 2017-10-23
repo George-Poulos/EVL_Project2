@@ -22,8 +22,8 @@ public class Star
 	private const float SUN_SCALE_CONSTANT = 100000F;
 	private const float HAB_WIDTH = 0.03F;
 	private const float PANEL_Z = 20F;
-	private const float PANEL_WIDTH = 0.1F;
-	private const float PANEL_HEIGHT = 30.0F;
+	private const float PANEL_WIDTH = 30.0F;
+	private const float PANEL_HEIGHT = 0.1F;
 	private const float PANEL_DEPTH = 0.1F;
 
 	/**
@@ -147,11 +147,12 @@ public class Star
 		var sunTextMesh = sideSunText.AddComponent<TextMesh>();
 		sunTextMesh.text = this.name;
 		sunTextMesh.fontSize = 150;
-
+		sideSunText.transform.parent = parentSide.transform;
 
 		habZone = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		habZone.name = "Hab";
 		habZone.transform.parent = parentSide.transform;
+		init2dHab();
 
 		var habMaterial = new Material(Shader.Find("Standard"));
 		habZone.GetComponent<MeshRenderer>().material = habMaterial;
