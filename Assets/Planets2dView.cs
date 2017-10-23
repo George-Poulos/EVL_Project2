@@ -394,6 +394,5 @@ public class Planets2dView : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-
 	}
 }

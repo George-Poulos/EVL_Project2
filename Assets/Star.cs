@@ -38,6 +38,18 @@ public class Star
 		setupGameStuff(parent);
 	}
 
+	public Star(string name, float brightness, string texture, string type, float radius, int numberOfPlanets, Transform parent) {
+		this.name = name;
+		this.brightness = brightness;
+		this.type = type;
+		this.radius = radius;
+		this.numberOfPlanets = numberOfPlanets;
+		this.scaledRadius = this.radius / SUN_SCALE_CONSTANT;
+		this.texture = texture;
+
+		setupGameStuff(parent);
+	}
+
 	private void setupGameStuff(Transform parent) {
 		float sunSize = 0.25F;
 		root = new GameObject(this.name);
@@ -79,27 +91,39 @@ public class Star
 		sunTextMesh.fontSize = 200;
 		sunText.transform.parent = root.transform;
 
-		float innerRad = this.brightness * 9.5F;
-		float outerRad = this.brightness * 14F;
 		innerHab = new GameObject(this.name + " innerHab");
 		outerHab = new GameObject(this.name + " outerHab");
-		initHab(innerHab, innerRad * radiusScale, Color.green, root.transform);
-		initHab(outerHab, outerRad * radiusScale, Color.green, root.transform);
+		initHab(innerHab, true);
+		initHab(outerHab, false);
+		innerHab.transform.parent = root.transform;
+		outerHab.transform.parent = root.transform;
 	}
 
-	private void initHab(GameObject hab, float radius, Color orbitColor, Transform parent) {
+	private void initHab(GameObject hab, bool inner) {
+		float rad = inner ? this.brightness * 9.5F : this.brightness * 14F;
+		rad *= this.radiusScale;
+
 		hab.AddComponent<Circle>();
 		hab.AddComponent<LineRenderer>();
-		hab.GetComponent<Circle>().xradius = radius;
-		hab.GetComponent<Circle>().yradius = radius;
+		hab.GetComponent<Circle>().xradius = rad;
+		hab.GetComponent<Circle>().yradius = rad;
 
 		var line = hab.GetComponent<LineRenderer>();
 		line.startWidth = HAB_WIDTH;
 		line.endWidth = HAB_WIDTH;
 		line.useWorldSpace = false;
 
-		hab.GetComponent<LineRenderer>().material.color = orbitColor;
-		hab.transform.parent = parent;
+		hab.GetComponent<LineRenderer>().material.color = Color.green;
+	}
+
+	public void setOrbitScale(float newScale) {
+		this.radiusScale = newScale;
+		UnityEngine.Object.DestroyImmediate(innerHab.GetComponent<LineRenderer>());			
+		UnityEngine.Object.DestroyImmediate(innerHab.GetComponent<Circle>());
+		UnityEngine.Object.DestroyImmediate(outerHab.GetComponent<LineRenderer>());			
+		UnityEngine.Object.DestroyImmediate(outerHab.GetComponent<Circle>());
+		initHab(innerHab, true);
+		initHab(outerHab, false);
 	}
 
 	/**

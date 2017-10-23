@@ -5,9 +5,9 @@ public class Planet
 {
 	public GameObject root, planet, orbit;
 
-	public float rotateScale = 0.2F;
-	public float distanceScale = 10.0F;
-	public float planetSizeScale = 10000.0F;
+	private float rotateScale = 0.2F;
+	private float distanceScale = 2.0F;
+	private float planetSizeScale = 10000.0F;
 	public float radiusOfPlanet; 
 	public float radiusOfOrbit;
 	public string planetLetter;
@@ -42,18 +42,26 @@ public class Planet
 		setupGameStuff(parent);
 	}
 
+	public Planet(float radiusOfOrbit, float radiusOfPlanet, string planetLetter, string texture, float timeToOrbit, Star star, Transform parent) {
+		this.radiusOfOrbit = radiusOfOrbit / AU_TO_KM;
+		this.radiusOfPlanet = radiusOfPlanet;
+		this.planetLetter = planetLetter;
+		this.timeToOrbit = timeToOrbit;
+		this.star = star;
+		this.texture = texture;
+		setupGameStuff(parent);
+	}
+
 	private void setupGameStuff(Transform parent) {
 		float scaledSize = this.radiusOfPlanet / this.planetSizeScale;
-		float scaledRadius = this.radiusOfOrbit * this.distanceScale;
-		float scaledSpeed = -1.0F / this.timeToOrbit * this.rotateScale;
 
 		root = new GameObject(this.planetLetter + "Center");
 		root.AddComponent<rotate>();
-		root.GetComponent<rotate>().rotateSpeed = scaledSpeed;
+		updateRevoSpeed();
 
 		planet = GameObject.CreatePrimitive(PrimitiveType.Sphere);
 		planet.name = this.planetLetter;
-		planet.transform.position = new Vector3(0, 0, scaledRadius);
+		planet.transform.position = new Vector3(0, 0, 0);
 		planet.transform.localScale = new Vector3(scaledSize, scaledSize, scaledSize);
 		planet.transform.parent = root.transform;
 
@@ -62,6 +70,36 @@ public class Planet
 		planetMaterial.mainTexture = Resources.Load(this.texture) as Texture;
 
 		orbit = new GameObject(this.planetLetter + " orbit");
+		orbit.transform.parent = root.transform;
+		updateRadius();
+
+		root.transform.parent = parent;
+	}
+
+	public void setOrbitScale(float newScale) {
+		this.distanceScale = newScale;
+		UnityEngine.Object.DestroyImmediate(orbit.GetComponent<LineRenderer>());			
+		UnityEngine.Object.DestroyImmediate(orbit.GetComponent<Circle>());
+		updateRadius();
+	}
+
+	public void setRevoScale(float newScale) {
+		this.rotateScale = newScale;
+		updateRevoSpeed();
+	}
+
+	private void updateRevoSpeed() {
+		float scaledSpeed = -1.0F / this.timeToOrbit * this.rotateScale;
+		root.GetComponent<rotate>().rotateSpeed = scaledSpeed;
+	}
+
+	private void updateRadius() {
+		float scaledRadius = this.radiusOfOrbit * this.distanceScale * 10.0F;
+
+		Vector3 position = planet.transform.position;
+ 		position[2] = scaledRadius; // the Z value
+ 		planet.transform.position = position;
+		
 		orbit.AddComponent<Circle>();
 		orbit.AddComponent<LineRenderer>();
 		orbit.GetComponent<Circle>().xradius = scaledRadius;
@@ -73,21 +111,18 @@ public class Planet
 		line.useWorldSpace = false;
 
 		orbit.GetComponent<LineRenderer>().material.color = Color.white;
-		orbit.transform.parent = root.transform;
-
-		root.transform.parent = parent;
 	}
 
 	private bool setMassRadius() {
 		float massDouble = this.mass;
 		float radius = this.radiusOfOrbit;
 		float radiusPlanet = this.radiusOfPlanet;
-		if ((massDouble <= 0) && (radiusPlanet <= 0)) {
+		if ((massDouble <= 0.0F) && (radiusPlanet <= 0.0F)) {
 			return true;
 		} else {
-			if (massDouble <= 0) {
+			if (massDouble <= 0.0F) {
 				massDouble = (float)(0.00672F * Math.Exp(0.0000706F * (radiusPlanet)));
-			} else if (radius <= 0) {
+			} else if (radius <= 0.0F) {
 				radius = (float)(72483+(15496 * Math.Log(massDouble)));
 			}
 		}
@@ -98,15 +133,15 @@ public class Planet
 		// Set the texture based on the radius/mass
 		float massDouble = this.mass;
 
-		if (massDouble <= 0) {
+		if (massDouble <= 0.0F) {
 			texture = "";	
 		} 
 		else {
-			if (massDouble < 0.05) {
+			if (massDouble < 0.05F) {
 				texture = "uranus";
-			} else if (massDouble < 0.1) {
+			} else if (massDouble < 0.1F) {
 				texture = "neptune";
-			} else if (massDouble < 0.65) {
+			} else if (massDouble < 0.65F) {
 				texture = "saturn";
 			} else {
 				texture = "jupiter";
