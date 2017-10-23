@@ -154,6 +154,7 @@ public class Planets : MonoBehaviour {
 		}
 		p.dict["Our Sun"].solarSystem.SetActive(true);
 		p.dict["KOI-351"].solarSystem.SetActive(true);
+		p.dict["TRAPPIST-1"].setOrbitScale(50.0F);
 	}
 
 	// Update is called once per frame

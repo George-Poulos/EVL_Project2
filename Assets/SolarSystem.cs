@@ -4,28 +4,34 @@ using UnityEngine;
 
 public class SolarSystem 
 {
-	public GameObject solarSystem;
+	public GameObject solarSystem, sideSystem;
 
 	public Star star;
 	public List<Planet> planets = new List<Planet>(); 
 	public int numOfPlanets;
 
-	public SolarSystem(String[] starItems, Transform parent)
+	public SolarSystem(String[] starItems, Transform parent, Transform sideView)
 	{
 		solarSystem = new GameObject();
-		this.star = new Star(starItems, solarSystem.transform);
+		sideSystem = new GameObject();
+		this.star = new Star(starItems, solarSystem.transform, sideSystem.transform);
 		solarSystem.name = star.name;
+		sideSystem.name = star.name + " side view";
 		this.numOfPlanets = star.numberOfPlanets;
 		solarSystem.transform.parent = parent;
+		sideSystem.transform.parent = sideView;
 	}
 
-	public SolarSystem(string name, float brightness, string texture, string type, float radius, int numberOfPlanets, Transform parent) {
+	public SolarSystem(string name, float brightness, string texture, string type, float radius, int numberOfPlanets, Transform parent, Transform sideView) {
 		solarSystem = new GameObject();
+		sideSystem = new GameObject();
 		this.star = new Star(name, brightness, texture, type, radius, 
-			numberOfPlanets, solarSystem.transform);
+			numberOfPlanets, solarSystem.transform, sideSystem.transform);
 		solarSystem.name = star.name;
+		sideSystem.name = star.name + " side view";
 		this.numOfPlanets = star.numberOfPlanets;
 		solarSystem.transform.parent = parent;
+		sideSystem.transform.parent = sideView;
 	}
 
 	public void addPlanet(String[] planetItems){
@@ -54,5 +60,3 @@ public class SolarSystem
 		}
 	}
 }
-
-

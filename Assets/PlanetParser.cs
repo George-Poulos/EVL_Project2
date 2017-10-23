@@ -28,6 +28,12 @@ public class PlanetParser
 	public PlanetParser (string fileName)
 	{
 		GameObject universe = new GameObject("Universe");
+		Menu2DController sideMenu = new Menu2DController();
+	
+		var ourSystem = createSol(universe, sideMenu.View);
+		dict.Add("Our Sun", ourSystem);
+		sideMenu.menu.Add(ourSystem);
+	
 		var oneOffset = new Vector3 (0, -15, 0);
 		string text = System.IO.File.ReadAllText(fileName);
 		string[] csvLines = text.Split ('\n');
@@ -41,20 +47,20 @@ public class PlanetParser
 				if (dict.ContainsKey (items [1])) {
 					dict[items[1]].addPlanet(items);
 				} else {
-					SolarSystem system = new SolarSystem(items, universe.transform);
+					SolarSystem system = new SolarSystem(items, universe.transform, sideMenu.View.transform);
+					sideMenu.menu.Add(system);
 					dict.Add(items [1], system);
 					system.addPlanet(items);
 				}
 			}
 		}
 		foreach(var system in dict.Values) {
-			system.setPosition(oneOffset);
+			if(system.star.name != "Our Sun")
+				system.setPosition(oneOffset);
 		}
-		var ourSystem = createSol(universe);
-		dict.Add("Our Sun", ourSystem);
 	}
 
-	private SolarSystem createSol(GameObject universe) {
+	private SolarSystem createSol(GameObject universe, GameObject sideMenu) {
 		var systemOffset = new Vector3 (0, 0, 0);
 		SolarSystem ourSystem = new SolarSystem(
 			"Our Sun",
@@ -63,7 +69,8 @@ public class PlanetParser
 			"G2V",
 			695700,
 			8,
-			universe.transform
+			universe.transform,
+			sideMenu.transform
 		);
 		for(int i = 0; i < 8; i++) {
 			ourSystem.addPlanet(
