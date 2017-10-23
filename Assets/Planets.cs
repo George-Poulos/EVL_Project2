@@ -287,18 +287,18 @@ public class Planets : MonoBehaviour {
 		// need to do this last
 		SolarCenter.transform.position = offset;
 
-
-		// add in second 'flat' representation
-		GameObject SolarSide;
-		SolarSide = new GameObject();
-		SolarSide.name = "Side View of" + starInfo[1];
-
-
-		sideDealWithStar (starInfo, SolarSide, AllOrbits);
-		sideDealWithPlanets (planetInfo, SolarSide, AllOrbits);
-
-		SolarSide.transform.position = new Vector3 (0, 8, 10.0F);
-		SolarSide.transform.position += (offset * 0.15F);
+//
+//		// add in second 'flat' representation
+//		GameObject SolarSide;
+//		SolarSide = new GameObject();
+//		SolarSide.name = "Side View of" + starInfo[1];
+//
+//
+//		sideDealWithStar (starInfo, SolarSide, AllOrbits);
+//		sideDealWithPlanets (planetInfo, SolarSide, AllOrbits);
+//
+//		SolarSide.transform.position = new Vector3 (0, 8, 10.0F);
+//		SolarSide.transform.position += (offset * 0.15F);
 
 	}
 
