@@ -16,6 +16,7 @@ public class Planet
 	public string discovered;
 	public Star star;
 	public float timeToOrbit; 
+	public float volume;
 
 	public string texture;
 
@@ -25,13 +26,14 @@ public class Planet
 	private const float JUPITER_RADIUS_TO_KM = 69911F;
 	private const float YEAR_TO_DAYS = 365.2422F; 
 	private const float ORBIT_WIDTH = 0.01F;
-
+	private const float AVG_DENSITY = 1.33F;
 
 	public Planet (string [] data, Star star, Transform parent)
 	{
 		this.radiusOfOrbit = string.IsNullOrEmpty(data[9]) ? 0.0F : float.Parse (data [9]);
-		this.radiusOfPlanet = string.IsNullOrEmpty(data[26]) ? 0.0F : float.Parse (data [26]) * JUPITER_RADIUS_TO_KM;
-		this.mass = string.IsNullOrEmpty(data[21]) ? 0.0F : float.Parse(data [21]);
+		this.mass = string.IsNullOrEmpty(data[21]) ? 1.0F : float.Parse(data [21]);
+		this.volume = this.mass/AVG_DENSITY;
+		this.radiusOfPlanet = string.IsNullOrEmpty(data[26]) ?  (float)Math.Pow((this.volume*3)/(4*3.14), (1/3)) * JUPITER_RADIUS_TO_KM: float.Parse (data [26]) * JUPITER_RADIUS_TO_KM;
 		this.name = data [70];
 		this.discovered = data [3];
 		this.planetLetter = data [2];
