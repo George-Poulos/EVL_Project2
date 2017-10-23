@@ -146,7 +146,7 @@ public class Star
 		sideSunText.transform.position = new Vector3(-0.47F * PANEL_WIDTH, 22.0F * PANEL_HEIGHT, PANEL_Z);
 		sideSunText.transform.localScale = new Vector3(0.1F, 0.1F, 0.1F);
 		var sunTextMesh = sideSunText.AddComponent<TextMesh>();
-		sunTextMesh.text = this.name + " - " + this.distanceAwayFromUs + "ly away";
+		sunTextMesh.text = this.name + ": " + this.type + " - " + this.distanceAwayFromUs + "ly away";
 		sunTextMesh.fontSize = 150;
 		sideSunText.transform.parent = parentSide.transform;
 
