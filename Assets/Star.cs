@@ -4,7 +4,7 @@ using UnityEngine;
 public class Star 
 {
 	public GameObject root, sun, upperSun, sunText, sunSupport, innerHab, outerHab;
-	public GameObject sideRoot, sideSun, sideSunText, habZone;
+	public GameObject sideRoot, sideSun, sideSunText, habZone, offScreenArrow;
 	public float radiusScale = 2.0F;
 
 	public AudioSource clip = Resources.Load("lava") as AudioSource;
@@ -14,6 +14,7 @@ public class Star
 	public string name;
 	public string distanceAwayFromUs;
 	public string type;
+	public string discovered;
 	public float radius;
 	public float scaledRadius;
 	public int numberOfPlanets;
@@ -24,7 +25,7 @@ public class Star
 	private const float SUN_SCALE_CONSTANT = 100000F;
 	private const float HAB_WIDTH = 0.03F;
 	private const float PANEL_Z = 0F;
-	private const float PANEL_WIDTH = 30.0F;
+	private const float PANEL_WIDTH = 40.0F;
 	private const float PANEL_HEIGHT = 0.1F;
 	private const float PANEL_DEPTH = 0.1F;
 
@@ -41,14 +42,16 @@ public class Star
 		this.type = string.IsNullOrEmpty(starData[216]) ? "gstar" : starData [216];
 		this.brightness = string.IsNullOrEmpty(starData[225]) ? 1.2F : (float)Math.Pow(10, float.Parse(starData[225]));
 		this.scaledRadius = this.radius / SUN_SCALE_CONSTANT;
+		this.discovered = starData[3];
 
 		setTexture();
 		setupGameStuff(parent);
 		setup2dStuff(flatParent);
 	}
 
-	public Star(string name, float brightness, string texture, string type, float radius, int numberOfPlanets, string distanceAwayFromUs, Transform parent, Transform flatParent) {
+	public Star(string name, string discovered, float brightness, string texture, string type, float radius, int numberOfPlanets, string distanceAwayFromUs, Transform parent, Transform flatParent) {
 		this.name = name;
+		this.discovered = discovered;
 		this.brightness = brightness;
 		this.type = type;
 		this.radius = radius;
@@ -156,7 +159,7 @@ public class Star
 		sideSunText.transform.position = new Vector3(-0.47F * PANEL_WIDTH, 22.0F * PANEL_HEIGHT, PANEL_Z);
 		sideSunText.transform.localScale = new Vector3(0.1F, 0.1F, 0.1F);
 		var sunTextMesh = sideSunText.AddComponent<TextMesh>();
-		sunTextMesh.text = this.name + ": " + this.type + " - " + this.distanceAwayFromUs + "ly away";
+		sunTextMesh.text = this.name + ": " + this.type + " - " + this.distanceAwayFromUs + "ly away (via " + this.discovered + ")";
 		sunTextMesh.fontSize = 150;
 		sideSunText.transform.parent = parentSide.transform;
 
@@ -165,6 +168,17 @@ public class Star
 		habZone.transform.position = new Vector3(0, 0, 0);
 		habZone.transform.parent = parentSide.transform;
 		init2dHab();
+
+		offScreenArrow = new GameObject();
+		offScreenArrow.name = "size indicator";
+		offScreenArrow.transform.position = new Vector3(0.5F * PANEL_WIDTH + 0.5F, 32.5F * PANEL_HEIGHT, PANEL_Z);
+		offScreenArrow.transform.localScale = new Vector3(0.1F, 0.1F, 0.1F);
+		var arrowMesh = offScreenArrow.AddComponent<TextMesh>();
+		arrowMesh.text = "→";
+		arrowMesh.fontSize = 500;
+		arrowMesh.color = Color.yellow;
+		offScreenArrow.transform.parent = parentSide.transform;		
+		setIndicator(false);
 
 		var habMaterial = new Material(Shader.Find("Standard"));
 		habZone.GetComponent<MeshRenderer>().material = habMaterial;
@@ -193,6 +207,10 @@ public class Star
 
 	public Vector3 get2dSize() {
 		return new Vector3(30, 4, 0.1F);
+	}
+
+	public void setIndicator(bool active) {
+		offScreenArrow.SetActive(active);
 	}
 
 	/**
