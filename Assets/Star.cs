@@ -4,7 +4,7 @@ using UnityEngine;
 public class Star 
 {
 	public GameObject root, sun, upperSun, sunText, sunSupport, innerHab, outerHab;
-	public GameObject sideRoot, sideSun, sideSunText, habZone;
+	public GameObject sideRoot, sideSun, sideSunText, habZone, offScreenArrow;
 	public float radiusScale = 2.0F;
 
 	public float brightness;
@@ -23,7 +23,7 @@ public class Star
 	private const float SUN_SCALE_CONSTANT = 100000F;
 	private const float HAB_WIDTH = 0.03F;
 	private const float PANEL_Z = 0F;
-	private const float PANEL_WIDTH = 30.0F;
+	private const float PANEL_WIDTH = 40.0F;
 	private const float PANEL_HEIGHT = 0.1F;
 	private const float PANEL_DEPTH = 0.1F;
 
@@ -159,6 +159,17 @@ public class Star
 		habZone.transform.parent = parentSide.transform;
 		init2dHab();
 
+		offScreenArrow = new GameObject();
+		offScreenArrow.name = "size indicator";
+		offScreenArrow.transform.position = new Vector3(0.5F * PANEL_WIDTH + 0.5F, 32.5F * PANEL_HEIGHT, PANEL_Z);
+		offScreenArrow.transform.localScale = new Vector3(0.1F, 0.1F, 0.1F);
+		var arrowMesh = offScreenArrow.AddComponent<TextMesh>();
+		arrowMesh.text = "→";
+		arrowMesh.fontSize = 500;
+		arrowMesh.color = Color.yellow;
+		offScreenArrow.transform.parent = parentSide.transform;		
+		setIndicator(false);
+
 		var habMaterial = new Material(Shader.Find("Standard"));
 		habZone.GetComponent<MeshRenderer>().material = habMaterial;
 		habMaterial.mainTexture = Resources.Load("habitable") as Texture;
@@ -186,6 +197,10 @@ public class Star
 
 	public Vector3 get2dSize() {
 		return new Vector3(30, 4, 0.1F);
+	}
+
+	public void setIndicator(bool active) {
+		offScreenArrow.SetActive(active);
 	}
 
 	/**
