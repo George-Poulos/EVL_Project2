@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlanetParser
 {
 	public Dictionary<string, SolarSystem> dict = new Dictionary<string, SolarSystem>();
+	public Menu2DController sideMenu;
+
 	private float[] solOrbit = new float[8] {
 		57910000, 108200000, 149600000, 227900000, 778500000, 1433000000, 2877000000, 4503000000
 	};
@@ -28,6 +30,12 @@ public class PlanetParser
 	public PlanetParser (string fileName)
 	{
 		GameObject universe = new GameObject("Universe");
+		sideMenu = new Menu2DController();
+	
+		var ourSystem = createSol(universe, sideMenu.View);
+		dict.Add("Our Sun", ourSystem);
+		sideMenu.menu.Add(ourSystem);
+	
 		var oneOffset = new Vector3 (0, -15, 0);
 		string text = System.IO.File.ReadAllText(fileName);
 		string[] csvLines = text.Split ('\n');
@@ -41,20 +49,22 @@ public class PlanetParser
 				if (dict.ContainsKey (items [1])) {
 					dict[items[1]].addPlanet(items);
 				} else {
-					SolarSystem system = new SolarSystem(items, universe.transform);
+					SolarSystem system = new SolarSystem(items, universe.transform, sideMenu.View.transform);
+					sideMenu.addSolarSystem(system);
 					dict.Add(items [1], system);
 					system.addPlanet(items);
 				}
 			}
 		}
 		foreach(var system in dict.Values) {
-			system.setPosition(oneOffset);
+			if(system.star.name != "Our Sun") {
+				system.set3dPosition(oneOffset);
+				system.solarSystem.SetActive(false);
+			}
 		}
-		var ourSystem = createSol(universe);
-		dict.Add("Our Sun", ourSystem);
 	}
 
-	private SolarSystem createSol(GameObject universe) {
+	private SolarSystem createSol(GameObject universe, GameObject sideMenu) {
 		var systemOffset = new Vector3 (0, 0, 0);
 		SolarSystem ourSystem = new SolarSystem(
 			"Our Sun",
@@ -63,7 +73,8 @@ public class PlanetParser
 			"G2V",
 			695700,
 			8,
-			universe.transform
+			universe.transform,
+			sideMenu.transform
 		);
 		for(int i = 0; i < 8; i++) {
 			ourSystem.addPlanet(
@@ -74,7 +85,7 @@ public class PlanetParser
 				solTime[i]
 			);
 		}
-		ourSystem.setPosition(systemOffset);
+		ourSystem.set3dPosition(systemOffset);
 		return ourSystem;
 	}
 

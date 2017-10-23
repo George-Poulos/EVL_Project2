@@ -149,11 +149,12 @@ public class Planets : MonoBehaviour {
 
 	void Start () {
 		p = new PlanetParser ("./Assets/Resources/planets.csv");
-		foreach(var system in p.dict.Values) {
-			system.solarSystem.SetActive(false);
-		}
-		p.dict["Our Sun"].solarSystem.SetActive(true);
-		p.dict["KOI-351"].solarSystem.SetActive(true);
+		// p.dict["Our Sun"].setOrbitScale(4.0F);
+		p.sideMenu.updateMenu();
+		p.sideMenu.setMenuPosition(new Vector3(0, 50, 30));
+		p.sideMenu.updateMenu();
+		//p.dict["Our Sun"].set2dPosition(new Vector3 (0, 8, 0));
+		//p.dict["TRAPPIST-1"].setOrbitScale(50.0F);
 	}
 
 	// Update is called once per frame

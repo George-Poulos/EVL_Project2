@@ -4,6 +4,7 @@ using UnityEngine;
 public class Star 
 {
 	public GameObject root, sun, upperSun, sunText, sunSupport, innerHab, outerHab;
+	public GameObject sideRoot, sideSun, sideSunText, habZone;
 	public float radiusScale = 2.0F;
 
 	public float brightness;
@@ -20,10 +21,15 @@ public class Star
 	private const float STAR_RADIUS_CONVERT = 695700F;
 	private const float SUN_SCALE_CONSTANT = 100000F;
 	private const float HAB_WIDTH = 0.03F;
+	private const float PANEL_Z = 0F;
+	private const float PANEL_WIDTH = 30.0F;
+	private const float PANEL_HEIGHT = 0.1F;
+	private const float PANEL_DEPTH = 0.1F;
+
 	/**
 	 * Constructor for screating a Star 
 	 */
-	public Star (string[] starData, Transform parent)
+	public Star (string[] starData, Transform parent, Transform flatParent)
 	{
 		this.name = starData[1];
 		this.numberOfPlanets = string.IsNullOrEmpty(starData[4]) ? 0 : Int32.Parse(starData[4]);
@@ -31,14 +37,15 @@ public class Star
 		this.mass = string.IsNullOrEmpty(starData[59]) ? 1.0F : float.Parse(starData[59]);
 		this.radius = string.IsNullOrEmpty(starData[64]) ? this.mass * STAR_RADIUS_CONVERT : (float.Parse(starData[64]) * STAR_RADIUS_CONVERT);
 		this.type = string.IsNullOrEmpty(starData[216]) ? "gstar" : starData [216];
-		this.brightness = string.IsNullOrEmpty(starData[225]) ? 1.2F : float.Parse(starData[225]);
+		this.brightness = string.IsNullOrEmpty(starData[225]) ? 1.2F : (float)Math.Pow(10, float.Parse(starData[225]));
 		this.scaledRadius = this.radius / SUN_SCALE_CONSTANT;
 
 		setTexture();
 		setupGameStuff(parent);
+		setup2dStuff(flatParent);
 	}
 
-	public Star(string name, float brightness, string texture, string type, float radius, int numberOfPlanets, Transform parent) {
+	public Star(string name, float brightness, string texture, string type, float radius, int numberOfPlanets, Transform parent, Transform flatParent) {
 		this.name = name;
 		this.brightness = brightness;
 		this.type = type;
@@ -48,6 +55,7 @@ public class Star
 		this.texture = texture;
 
 		setupGameStuff(parent);
+		setup2dStuff(flatParent);
 	}
 
 	private void setupGameStuff(Transform parent) {
@@ -116,6 +124,42 @@ public class Star
 		hab.GetComponent<LineRenderer>().material.color = Color.green;
 	}
 
+	private void setup2dStuff(Transform parentSide) {
+		sideRoot = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		sideRoot.name = "Side " + this.name + " Panel";
+		sideRoot.transform.position = new Vector3(0, 0, PANEL_Z);
+		sideRoot.transform.localScale = new Vector3(PANEL_WIDTH, PANEL_HEIGHT, PANEL_DEPTH);
+		sideRoot.transform.parent = parentSide.transform;
+
+		sideSun = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		sideSun.name = "Side " + this.name + " Star";
+		sideSun.transform.position = new Vector3(-0.5F * PANEL_WIDTH - 0.5F, 0, PANEL_Z);
+		sideSun.transform.localScale = new Vector3(1.0F, PANEL_HEIGHT*40.0F, 2.0F * PANEL_DEPTH);
+		sideSun.transform.parent = parentSide.transform;
+
+		var material = new Material(Shader.Find("Unlit/Texture"));
+		sideSun.GetComponent<MeshRenderer>().material = material;
+		material.mainTexture = Resources.Load(texture) as Texture;
+
+		sideSunText = new GameObject("Side Star Name");
+		sideSunText.transform.position = new Vector3(-0.47F * PANEL_WIDTH, 22.0F * PANEL_HEIGHT, PANEL_Z);
+		sideSunText.transform.localScale = new Vector3(0.1F, 0.1F, 0.1F);
+		var sunTextMesh = sideSunText.AddComponent<TextMesh>();
+		sunTextMesh.text = this.name;
+		sunTextMesh.fontSize = 150;
+		sideSunText.transform.parent = parentSide.transform;
+
+		habZone = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		habZone.name = "Hab";
+		habZone.transform.position = new Vector3(0, 0, 0);
+		habZone.transform.parent = parentSide.transform;
+		init2dHab();
+
+		var habMaterial = new Material(Shader.Find("Standard"));
+		habZone.GetComponent<MeshRenderer>().material = habMaterial;
+		habMaterial.mainTexture = Resources.Load("habitable") as Texture;
+	}
+
 	public void setOrbitScale(float newScale) {
 		this.radiusScale = newScale;
 		UnityEngine.Object.DestroyImmediate(innerHab.GetComponent<LineRenderer>());			
@@ -124,6 +168,20 @@ public class Star
 		UnityEngine.Object.DestroyImmediate(outerHab.GetComponent<Circle>());
 		initHab(innerHab, true);
 		initHab(outerHab, false);
+		init2dHab();
+	}
+
+	private void init2dHab() {
+		float beginEdge = Mathf.Abs(this.brightness * 9.5F);
+		float endEdge = Mathf.Abs(this.brightness * 14F);
+		Vector3 oldPosition = habZone.transform.position;
+		oldPosition[0] = (-0.5F * PANEL_WIDTH) + ((beginEdge+endEdge) * 0.5F * this.radiusScale);
+		habZone.transform.position = oldPosition;
+		habZone.transform.localScale = new Vector3 ((endEdge - beginEdge)* this.radiusScale, 40.0F * PANEL_HEIGHT, 2.0F * PANEL_DEPTH);
+	}
+
+	public Vector3 get2dSize() {
+		return new Vector3(30, 4, 0.1F);
 	}
 
 	/**

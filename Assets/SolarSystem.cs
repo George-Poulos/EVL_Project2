@@ -4,28 +4,44 @@ using UnityEngine;
 
 public class SolarSystem 
 {
-	public GameObject solarSystem;
+	public GameObject solarSystem, sideSystem;
 
 	public Star star;
 	public List<Planet> planets = new List<Planet>(); 
 	public int numOfPlanets;
 
-	public SolarSystem(String[] starItems, Transform parent)
+	public SolarSystem(String[] starItems, Transform parent, Transform sideView)
 	{
 		solarSystem = new GameObject();
-		this.star = new Star(starItems, solarSystem.transform);
+		sideSystem = new GameObject();
+		this.star = new Star(starItems, solarSystem.transform, sideSystem.transform);
+		
+		sideSystem.AddComponent<BoxCollider>();
+		var collider = sideSystem.GetComponent<BoxCollider>();
+		collider.isTrigger = true;
+		collider.size = this.star.get2dSize();
+
+		sideSystem.AddComponent<ToggleOnTrigger>();
+		var script = sideSystem.GetComponent<ToggleOnTrigger>();
+		script.target = this;
+
 		solarSystem.name = star.name;
+		sideSystem.name = star.name + " side view";
 		this.numOfPlanets = star.numberOfPlanets;
 		solarSystem.transform.parent = parent;
+		sideSystem.transform.parent = sideView;
 	}
 
-	public SolarSystem(string name, float brightness, string texture, string type, float radius, int numberOfPlanets, Transform parent) {
+	public SolarSystem(string name, float brightness, string texture, string type, float radius, int numberOfPlanets, Transform parent, Transform sideView) {
 		solarSystem = new GameObject();
+		sideSystem = new GameObject();
 		this.star = new Star(name, brightness, texture, type, radius, 
-			numberOfPlanets, solarSystem.transform);
+			numberOfPlanets, solarSystem.transform, sideSystem.transform);
 		solarSystem.name = star.name;
+		sideSystem.name = star.name + " side view";
 		this.numOfPlanets = star.numberOfPlanets;
 		solarSystem.transform.parent = parent;
+		sideSystem.transform.parent = sideView;
 	}
 
 	public void addPlanet(String[] planetItems){
@@ -37,8 +53,12 @@ public class SolarSystem
 			texture, timeToOrbit, this.star, solarSystem.transform));
 	}
 
-	public void setPosition(Vector3 position) {
+	public void set3dPosition(Vector3 position) {
 		solarSystem.transform.position = position;
+	}
+
+	public void set2dPosition(Vector3 position) {
+		sideSystem.transform.localPosition = position;
 	}
 
 	public void setOrbitScale(float newScale) {
@@ -54,5 +74,3 @@ public class SolarSystem
 		}
 	}
 }
-
-
