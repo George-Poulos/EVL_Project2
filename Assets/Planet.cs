@@ -14,10 +14,10 @@ public class Planet
 	public string planetLetter;
 	public float mass; 
 	public string name;
-	public string discovered;
 	public Star star;
 	public float timeToOrbit; 
 	public float volume;
+	public bool outOfBounds;
 
 	public string texture;
 
@@ -29,7 +29,7 @@ public class Planet
 	private const float ORBIT_WIDTH = 0.01F;
 	private const float AVG_DENSITY = 1.33F;
 	private const float PANEL_Z = 0F;
-	private const float PANEL_WIDTH = 30.0F;
+	private const float PANEL_WIDTH = 40.0F;
 	private const float PANEL_HEIGHT = 0.1F;
 	private const float PANEL_DEPTH = 0.1F;
 	private const float BASE_PLANET_SIZE = 10000F;
@@ -41,11 +41,12 @@ public class Planet
 		this.volume = this.mass/AVG_DENSITY;
 		this.radiusOfPlanet = string.IsNullOrEmpty(data[26]) ?  (float)Math.Pow((this.volume*3)/(4*3.14), (1/3)) * JUPITER_RADIUS_TO_KM: float.Parse (data [26]) * JUPITER_RADIUS_TO_KM;
 		this.name = data [70];
-		this.discovered = data [3];
 		this.planetLetter = data [2];
 		this.star = star;
 		this.timeToOrbit = string.IsNullOrEmpty(data[5]) ? 0.0F : float.Parse(data[5])/YEAR_TO_DAYS;
 		this.errorMassRadius = setMassRadius();
+		this.outOfBounds = false;
+
 		setTexture ();
 		setupGameStuff(parent);
 		setup2dStuff(flatParent);
@@ -153,7 +154,15 @@ public class Planet
 
 		orbit.GetComponent<LineRenderer>().material.color = Color.white;
 
-		sideRoot.transform.localPosition = new Vector3 (-0.5F * PANEL_WIDTH + scaledRadius, 0, PANEL_Z);
+		float newPos = -0.5F * PANEL_WIDTH + scaledRadius;
+		if(newPos < (PANEL_WIDTH/2)) {
+			sideRoot.SetActive(true);
+			sideRoot.transform.localPosition = new Vector3 (newPos, 0, PANEL_Z);
+			this.outOfBounds= false;
+		} else {
+			sideRoot.SetActive(false);
+			this.outOfBounds = true;
+		}
 	}
 
 	private bool setMassRadius() {

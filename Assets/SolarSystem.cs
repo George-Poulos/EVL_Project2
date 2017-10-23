@@ -32,11 +32,11 @@ public class SolarSystem
 		sideSystem.transform.parent = sideView;
 	}
 
-	public SolarSystem(string name, float brightness, string texture, string type, float radius, int numberOfPlanets, string distanceAwayFromUs, Transform parent, Transform sideView) {
+	public SolarSystem(string name, string discovered, float brightness, string texture, string type, float radius, int numberOfPlanets, string distanceAwayFromUs, Transform parent, Transform sideView) {
 		solarSystem = new GameObject();
 		sideSystem = new GameObject();
-		this.star = new Star(name, brightness, texture, type, radius, 
-			numberOfPlanets, distanceAwayFromUs, solarSystem.transform, 
+		this.star = new Star(name, discovered, brightness, texture, type, 
+			radius, numberOfPlanets, distanceAwayFromUs, solarSystem.transform, 
 			sideSystem.transform);
 		solarSystem.name = star.name;
 		sideSystem.name = star.name + " side view";
@@ -46,12 +46,16 @@ public class SolarSystem
 	}
 
 	public void addPlanet(String[] planetItems){
-		planets.Add(new Planet(planetItems, this.star, solarSystem.transform, sideSystem.transform));
+		var planet = new Planet(planetItems, this.star, solarSystem.transform, sideSystem.transform);
+		if(planet.outOfBounds) this.star.setIndicator(true);
+		planets.Add(planet);
 	}
 
 	public void addPlanet(float radiusOfOrbit, float radiusOfPlanet, string planetLetter, string texture, float timeToOrbit) {
-		planets.Add(new Planet(radiusOfOrbit, radiusOfPlanet, planetLetter,
-			texture, timeToOrbit, this.star, solarSystem.transform, sideSystem.transform));
+		var planet = new Planet(radiusOfOrbit, radiusOfPlanet, planetLetter,
+			texture, timeToOrbit, this.star, solarSystem.transform, sideSystem.transform);
+		if(planet.outOfBounds) this.star.setIndicator(true);
+		planets.Add(planet);
 	}
 
 	public void set3dPosition(Vector3 position) {
@@ -63,9 +67,14 @@ public class SolarSystem
 	}
 
 	public void setOrbitScale(float newScale) {
+		bool off = false;
 		foreach(var planet in planets) {
 			planet.setOrbitScale(newScale);
+			if(planet.outOfBounds) {
+				off = true;
+			}
 		}
+		star.setIndicator(off);
 		star.setOrbitScale(newScale);
 	}
 
