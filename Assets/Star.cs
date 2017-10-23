@@ -206,7 +206,7 @@ public class Star
 	}
 
 	public Vector3 get2dSize() {
-		return new Vector3(30, 4, 0.1F);
+		return new Vector3(PANEL_WIDTH, 4, 0.1F);
 	}
 
 	public void setIndicator(bool active) {
