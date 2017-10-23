@@ -32,11 +32,12 @@ public class SolarSystem
 		sideSystem.transform.parent = sideView;
 	}
 
-	public SolarSystem(string name, float brightness, string texture, string type, float radius, int numberOfPlanets, Transform parent, Transform sideView) {
+	public SolarSystem(string name, float brightness, string texture, string type, float radius, int numberOfPlanets, string distanceAwayFromUs, Transform parent, Transform sideView) {
 		solarSystem = new GameObject();
 		sideSystem = new GameObject();
 		this.star = new Star(name, brightness, texture, type, radius, 
-			numberOfPlanets, solarSystem.transform, sideSystem.transform);
+			numberOfPlanets, distanceAwayFromUs, solarSystem.transform, 
+			sideSystem.transform);
 		solarSystem.name = star.name;
 		sideSystem.name = star.name + " side view";
 		this.numOfPlanets = star.numberOfPlanets;
@@ -45,12 +46,12 @@ public class SolarSystem
 	}
 
 	public void addPlanet(String[] planetItems){
-		planets.Add(new Planet(planetItems, this.star, solarSystem.transform));
+		planets.Add(new Planet(planetItems, this.star, solarSystem.transform, sideSystem.transform));
 	}
 
 	public void addPlanet(float radiusOfOrbit, float radiusOfPlanet, string planetLetter, string texture, float timeToOrbit) {
 		planets.Add(new Planet(radiusOfOrbit, radiusOfPlanet, planetLetter,
-			texture, timeToOrbit, this.star, solarSystem.transform));
+			texture, timeToOrbit, this.star, solarSystem.transform, sideSystem.transform));
 	}
 
 	public void set3dPosition(Vector3 position) {
@@ -71,6 +72,12 @@ public class SolarSystem
 	public void setRevoScale(float newScale) {
 		foreach(var planet in planets) {
 			planet.setRevoScale(newScale);
+		}
+	}
+
+	public void setSizeScale(float newScale) {
+		foreach(var planet in planets) {
+			planet.setSizeScale(newScale);
 		}
 	}
 }
