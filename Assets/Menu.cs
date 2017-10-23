@@ -10,6 +10,8 @@ public class Menu : MonoBehaviour
 	Slider speedSlider;
 	Slider planetSizeSlider;
 
+	SteamVR_Controller.Device Controller;
+
 	float orbitVal;
 	float orbitPrevVal;
 	float speedVal;
@@ -17,9 +19,10 @@ public class Menu : MonoBehaviour
 	float planetSizeVal;
 	float planetSizePrevVal;
 
+	bool enabled = false;
+
 	PlanetParser p;
 
-	// Use this for initialization
 	void Start ()
 	{
 		orbitSlider = GameObject.Find ("ScaleSlider").GetComponent<Slider> ();
@@ -40,8 +43,10 @@ public class Menu : MonoBehaviour
 
 		foreach (Transform child in this.transform)
 		{
-			child.gameObject.SetActive(false);
+			child.gameObject.SetActive(enabled);
 		}
+		enabled = !enabled;
+
 	}
 		
 
@@ -71,14 +76,11 @@ public class Menu : MonoBehaviour
 		
 		foreach (Transform child in this.transform)
 		{
-			if (Input.GetKey(KeyCode.Q))
+			if (Input.GetKeyUp(KeyCode.Q) || Controller.GetPressUp(SteamVR_Controller.ButtonMask.ApplicationMenu))
 			{
-				child.gameObject.SetActive(false);
+				child.gameObject.SetActive(enabled);
+				enabled = !enabled;
 
-			}
-			else if (Input.GetKey(KeyCode.E))
-			{
-				child.gameObject.SetActive(true);
 			}
 		}
 	}
