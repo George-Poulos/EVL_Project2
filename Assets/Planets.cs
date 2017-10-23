@@ -24,7 +24,7 @@ public class Planets : MonoBehaviour {
 	float panelXScale = 2.0F;
 	float orbitXScale = 2.0F;
 
-	private PlanetParser p;
+	public PlanetParser p;
 	private bool x = false;
 	//------------------------------------------------------------------------------------//
 

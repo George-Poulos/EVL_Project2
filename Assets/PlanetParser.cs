@@ -77,5 +77,17 @@ public class PlanetParser
 		ourSystem.setPosition(systemOffset);
 		return ourSystem;
 	}
+
+	public void setOrbitalScaleAll(float newScale){
+		foreach(var system in dict.Values){
+			system.setOrbitScale (newScale);
+		}
+	}
+
+	public void setSpeedValueAll(float newScale){
+		foreach(var system in dict.Values){
+			system.setRevoScale (newScale);
+		}
+	}
 }
 
