@@ -24,78 +24,8 @@ public class Planets : MonoBehaviour {
 	float panelXScale = 2.0F;
 	float orbitXScale = 2.0F;
 
-
-	//------------------------------------------------------------------------------------//
-
-	void drawOrbit(string orbitName, float orbitRadius, Color orbitColor, float myWidth, GameObject myOrbits){
-
-		GameObject newOrbit;
-		GameObject orbits;
-
-
-		newOrbit = new GameObject (orbitName);
-		newOrbit.AddComponent<Circle> ();
-		newOrbit.AddComponent<LineRenderer> ();
-
-		newOrbit.GetComponent<Circle> ().xradius = orbitRadius;
-		newOrbit.GetComponent<Circle> ().yradius = orbitRadius;
-
-		var line = newOrbit.GetComponent<LineRenderer> ();
-		line.startWidth = myWidth;
-		line.endWidth = myWidth;
-		line.useWorldSpace = false;
-
-		newOrbit.GetComponent<LineRenderer> ().material.color = orbitColor;
-
-		orbits = myOrbits;
-		newOrbit.transform.parent = orbits.transform;
-
-
-	}
-
-	//------------------------------------------------------------------------------------//
-
-	void dealWithPlanets (string [,] planets, GameObject thesePlanets, GameObject theseOrbits){
-		GameObject newPlanetCenter;
-		GameObject newPlanet;
-
-		GameObject sunRelated;
-
-		Material planetMaterial;
-
-		int planetCounter;
-
-		for (planetCounter = 0; planetCounter < planets.GetLength(0); planetCounter++) {
-
-			float planetDistance = float.Parse (planets [planetCounter, 0]) / (149600000.0F) * 10.0F;
-			float planetSize = float.Parse (planets [planetCounter, 1]) * 2.0F / 10000.0F;
-			float planetSpeed = -1.0F / float.Parse (planets [planetCounter, 2]) * revolutionSpeed;
-			string textureName = planets [planetCounter, 3];
-			string planetName = planets [planetCounter, 4];
-
-
-			newPlanetCenter = new GameObject (planetName + "Center");
-			newPlanetCenter.AddComponent<rotate> ();
-
-			newPlanet = GameObject.CreatePrimitive (PrimitiveType.Sphere);
-			newPlanet.name = planetName;
-			newPlanet.transform.position = new Vector3 (0, 0, planetDistance * orbitXScale);
-			newPlanet.transform.localScale = new Vector3 (planetSize, planetSize, planetSize);
-			newPlanet.transform.parent = newPlanetCenter.transform;
-
-			newPlanetCenter.GetComponent<rotate> ().rotateSpeed = planetSpeed; 
-
-			planetMaterial = new Material (Shader.Find ("Standard"));
-			newPlanet.GetComponent<MeshRenderer> ().material = planetMaterial;
-			planetMaterial.mainTexture = Resources.Load (textureName) as Texture;
-
-			drawOrbit (planetName + " orbit", planetDistance * orbitXScale, Color.white, orbitWidth, theseOrbits);
-
-			sunRelated = thesePlanets;
-			newPlanetCenter.transform.parent = sunRelated.transform;
-		}
-	}
-
+	private PlanetParser p;
+	private bool x = false;
 	//------------------------------------------------------------------------------------//
 
 	void sideDealWithPlanets (string [,] planets, GameObject thisSide, GameObject theseOrbits){
@@ -189,75 +119,6 @@ public class Planets : MonoBehaviour {
 
 	//------------------------------------------------------------------------------------//
 
-	void dealWithStar (string [] star, GameObject thisStar, GameObject theseOrbits){
-
-		GameObject newSun, upperSun;
-		Material sunMaterial;
-
-		GameObject sunRelated;
-		GameObject sunSupport;
-		GameObject sunText;
-
-		float sunScale = float.Parse(star [0]) / 100000F;
-		float centerSunSize = 0.25F;
-
-		// set the habitable zone based on the star's luminosity
-		float innerHab = float.Parse (star[4]) * 9.5F;
-		float outerHab = float.Parse (star[4]) * 14F;
-
-
-		newSun = GameObject.CreatePrimitive (PrimitiveType.Sphere);
-		newSun.AddComponent<rotate> ();
-		newSun.name = star[1];
-		newSun.transform.position = new Vector3 (0, 0, 0);
-		newSun.transform.localScale = new Vector3 (centerSunSize, centerSunSize, centerSunSize);
-
-		sunRelated = thisStar;
-
-		newSun.GetComponent<rotate> ().rotateSpeed = -0.25F; 
-
-		sunMaterial = new Material (Shader.Find ("Unlit/Texture"));
-		newSun.GetComponent<MeshRenderer> ().material = sunMaterial;
-		sunMaterial.mainTexture = Resources.Load (star[2]) as Texture;
-
-		newSun.transform.parent = sunRelated.transform;
-
-
-		// copy the sun and make a bigger version above
-
-		upperSun = Instantiate (newSun);
-		upperSun.name = star[1] + " upper";
-		upperSun.transform.localScale = new Vector3 (sunScale,sunScale,sunScale);
-		upperSun.transform.position = new Vector3 (0, 10, 0);
-
-		upperSun.transform.parent = sunRelated.transform;
-
-		// draw the support between them
-		sunSupport = GameObject.CreatePrimitive (PrimitiveType.Cube);
-		sunSupport.transform.localScale = new Vector3 (0.1F, 10.0F, 0.1F);
-		sunSupport.transform.position = new Vector3 (0, 5, 0);
-		sunSupport.name = "Sun Support";
-
-		sunSupport.transform.parent = sunRelated.transform;
-
-
-		sunText = new GameObject();
-		sunText.name = "Star Name";
-		sunText.transform.position = new Vector3 (0, 5, 0);
-		sunText.transform.localScale = new Vector3 (0.1F, 0.1F, 0.1F);
-		var sunTextMesh = sunText.AddComponent<TextMesh>();
-		sunTextMesh.text = star[1];
-		sunTextMesh.fontSize = 200;
-
-		sunText.transform.parent = sunRelated.transform;
-
-
-		drawOrbit ("Habitable Inner Ring", innerHab * orbitXScale, Color.green, habWidth, theseOrbits);
-		drawOrbit ("Habitable Outer Ring", outerHab * orbitXScale, Color.green, habWidth, theseOrbits);
-	}
-
-	//------------------------------------------------------------------------------------//
-
 	void dealWithSystem(string[] starInfo, string[,] planetInfo, Vector3 offset, GameObject allThings){
 
 		GameObject SolarCenter;
@@ -270,125 +131,30 @@ public class Planets : MonoBehaviour {
 		SunStuff = new GameObject();
 		Planets = new GameObject();
 
-		SolarCenter.name = "SolarCenter" + " " + starInfo[1];
-		AllOrbits.name = "All Orbits" + " " + starInfo[1];
-		SunStuff.name = "Sun Stuff" + " " + starInfo[1];
-		Planets.name = "Planets" + " " + starInfo[1];
+		// add in second 'flat' representation
+		GameObject SolarSide;
+		SolarSide = new GameObject();
+		SolarSide.name = "Side View of" + starInfo[1];
 
-		SolarCenter.transform.parent = allThings.transform;
 
-		AllOrbits.transform.parent = SolarCenter.transform;
-		SunStuff.transform.parent = SolarCenter.transform;
-		Planets.transform.parent = SolarCenter.transform;
+		sideDealWithStar (starInfo, SolarSide, AllOrbits);
+		sideDealWithPlanets (planetInfo, SolarSide, AllOrbits);
 
-		dealWithStar (starInfo, SunStuff, AllOrbits);
-		dealWithPlanets (planetInfo, Planets, AllOrbits);
-
-		// need to do this last
-		SolarCenter.transform.position = offset;
-
-//
-//		// add in second 'flat' representation
-//		GameObject SolarSide;
-//		SolarSide = new GameObject();
-//		SolarSide.name = "Side View of" + starInfo[1];
-//
-//
-//		sideDealWithStar (starInfo, SolarSide, AllOrbits);
-//		sideDealWithPlanets (planetInfo, SolarSide, AllOrbits);
-//
-//		SolarSide.transform.position = new Vector3 (0, 8, 10.0F);
-//		SolarSide.transform.position += (offset * 0.15F);
+		SolarSide.transform.position = new Vector3 (0, 8, 10.0F);
+		SolarSide.transform.position += (offset * 0.15F);
 
 	}
 
 	//------------------------------------------------------------------------------------//
 
 	void Start () {
-
-		// string[] sol = new string[5] { "695500", "Our Sun", "sol", "G2V" , "1.0"};
-
-		// string[,] solPlanets = new string[8, 5] {
-		// 	{   "57910000",  "2440",    "0.24", "mercury", "mercury" },
-		// 	{  "108200000",  "6052",    "0.62", "venus",   "venus" },
-		// 	{  "149600000",  "6371",    "1.00", "earthmap", "earth" },
-		// 	{  "227900000",  "3400",    "1.88", "mars",     "mars" },
-		// 	{  "778500000", "69911",   "11.86", "jupiter", "jupiter" },
-		// 	{ "1433000000", "58232",   "29.46", "saturn",   "saturn" },
-		// 	{ "2877000000", "25362",   "84.01", "neptune", "uranus" },
-		// 	{ "4503000000", "24622",  "164.80", "uranus", "neptune" }
-		// };
-
-
-		// string[] TauCeti = new string[5] { "556400", "Tau Ceti", "gstar", "G8.5V" , "0.52"};
-
-		// string[,] TauCetiPlanets = new string[5, 5] {
-		// 	{ "15707776",  "9009",   "0.04", "venus",   "b" },
-		// 	{ "29171585", "11217",   "0.09", "venus", "c" },
-		// 	{ "55949604", "12088",   "0.26", "mercury",  "d" },
-		// 	{ "82578024", "13211",   "0.46", "mercury", "e" },
-		// 	{"201957126", "16454",   "1.75", "uranus",  "f" }
-		// };
-
-
-		// string[] Gliese581 = new string[5] { "201750", "Gliese 581", "mstar", "M3V" , "0.013"};
-
-		// string[,] Gliese581Planets = new string[3, 5] {
-		// 	{ "4188740",  "8919",   "0.009", "venus",   "e" },
-		// 	{ "6133513", "30554",   "0.014", "jupiter",   "b" },
-		// 	{"10920645", "20147",   "0.18", "neptune",  "c" }
-		// };
-
-		// GameObject allCenter = new GameObject();
-		// allCenter.name = "all systems";
-
-
-		// var systemOffset = new Vector3 (0, 0, 0);
-		// var oneOffset = new Vector3 (0, -30, 0);
-
-		// dealWithSystem (sol, solPlanets, systemOffset, allCenter);
-
-		// systemOffset += oneOffset;
-
-		// dealWithSystem (TauCeti, TauCetiPlanets, systemOffset, allCenter);
-
-		// systemOffset += oneOffset;
-
-		// dealWithSystem (Gliese581, Gliese581Planets, systemOffset, allCenter);
-
-		// systemOffset += oneOffset;
-
-		PlanetParser p = new PlanetParser ("./Assets/planets.csv");
-		// makeSystems (p.dict, allCenter, systemOffset, oneOffset);
-
-		// allCenter.transform.localScale = new Vector3 (0.1F, 0.1F, 0.1F);
+		p = new PlanetParser ("./Assets/Resources/planets.csv");
+		foreach(var system in p.dict.Values) {
+			system.solarSystem.SetActive(false);
+		}
+		p.dict["Our Sun"].solarSystem.SetActive(true);
+		p.dict["KOI-351"].solarSystem.SetActive(true);
 	}
-
-	// void makeSystems(Dictionary<string, SolarSystem> systems, GameObject allCenter, Vector3 systemOffset, Vector3 oneOffset){
-	// 	foreach (var solarSystem in systems.Values) {
-	// 		string[] sun = { 
-	// 			solarSystem.star.radius, 
-	// 			solarSystem.star.name, 
-	// 			solarSystem.star.texture,
-	// 			solarSystem.star.type,
-	// 			solarSystem.star.brightness
-	// 		}; 
-	// 		int count = solarSystem.numOfPlanets;
-	// 		string[,] planetArr = new string[count, 5];
-	// 		int j = 0;
-	// 		foreach (Planet planet in solarSystem.planets) {
-	// 			planetArr [j, 0] = planet.radiusOfOrbit;
-	// 			planetArr [j, 1] = planet.radiusOfPlanet;
-	// 			planetArr [j, 2] = planet.timeToOrbit;
-	// 			planetArr [j, 3] = planet.texture;
-	// 			planetArr [j, 4] = planet.planetLetter;
-
-	// 			j++;
-	// 		}
-	// 		dealWithSystem (sun, planetArr, systemOffset, allCenter);
-	// 		systemOffset += oneOffset;
-	// 	}
-	// }
 
 	// Update is called once per frame
 	void Update () {
