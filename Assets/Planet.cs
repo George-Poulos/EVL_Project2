@@ -137,9 +137,9 @@ public class Planet
 	private void updateRadius() {
 		float scaledRadius = this.radiusOfOrbit * this.distanceScale * 10.0F;
 
-		Vector3 position = planet.transform.position;
+		Vector3 position = planet.transform.localPosition;
  		position[2] = scaledRadius; // the Z value
- 		planet.transform.position = position;
+ 		planet.transform.localPosition = position;
 		
 		orbit.AddComponent<Circle>();
 		orbit.AddComponent<LineRenderer>();
