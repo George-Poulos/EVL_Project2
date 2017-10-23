@@ -14,7 +14,6 @@ public class Planet
 	public string planetLetter;
 	public float mass; 
 	public string name;
-	public string discovered;
 	public Star star;
 	public float timeToOrbit; 
 	public float volume;
@@ -41,7 +40,6 @@ public class Planet
 		this.volume = this.mass/AVG_DENSITY;
 		this.radiusOfPlanet = string.IsNullOrEmpty(data[26]) ?  (float)Math.Pow((this.volume*3)/(4*3.14), (1/3)) * JUPITER_RADIUS_TO_KM: float.Parse (data [26]) * JUPITER_RADIUS_TO_KM;
 		this.name = data [70];
-		this.discovered = data [3];
 		this.planetLetter = data [2];
 		this.star = star;
 		this.timeToOrbit = string.IsNullOrEmpty(data[5]) ? 0.0F : float.Parse(data[5])/YEAR_TO_DAYS;

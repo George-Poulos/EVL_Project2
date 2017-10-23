@@ -68,6 +68,7 @@ public class PlanetParser
 		var systemOffset = new Vector3 (0, 0, 0);
 		SolarSystem ourSystem = new SolarSystem(
 			"Our Sun",
+			"Transit",
 			1.0F,
 			"sol",
 			"G2V",

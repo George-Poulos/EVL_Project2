@@ -12,6 +12,7 @@ public class Star
 	public string name;
 	public string distanceAwayFromUs;
 	public string type;
+	public string discovered;
 	public float radius;
 	public float scaledRadius;
 	public int numberOfPlanets;
@@ -39,14 +40,16 @@ public class Star
 		this.type = string.IsNullOrEmpty(starData[216]) ? "gstar" : starData [216];
 		this.brightness = string.IsNullOrEmpty(starData[225]) ? 1.2F : (float)Math.Pow(10, float.Parse(starData[225]));
 		this.scaledRadius = this.radius / SUN_SCALE_CONSTANT;
+		this.discovered = starData[3];
 
 		setTexture();
 		setupGameStuff(parent);
 		setup2dStuff(flatParent);
 	}
 
-	public Star(string name, float brightness, string texture, string type, float radius, int numberOfPlanets, string distanceAwayFromUs, Transform parent, Transform flatParent) {
+	public Star(string name, string discovered, float brightness, string texture, string type, float radius, int numberOfPlanets, string distanceAwayFromUs, Transform parent, Transform flatParent) {
 		this.name = name;
+		this.discovered = discovered;
 		this.brightness = brightness;
 		this.type = type;
 		this.radius = radius;
@@ -146,7 +149,7 @@ public class Star
 		sideSunText.transform.position = new Vector3(-0.47F * PANEL_WIDTH, 22.0F * PANEL_HEIGHT, PANEL_Z);
 		sideSunText.transform.localScale = new Vector3(0.1F, 0.1F, 0.1F);
 		var sunTextMesh = sideSunText.AddComponent<TextMesh>();
-		sunTextMesh.text = this.name + ": " + this.type + " - " + this.distanceAwayFromUs + "ly away";
+		sunTextMesh.text = this.name + ": " + this.type + " - " + this.distanceAwayFromUs + "ly away (via " + this.discovered + ")";
 		sunTextMesh.fontSize = 150;
 		sideSunText.transform.parent = parentSide.transform;
 
