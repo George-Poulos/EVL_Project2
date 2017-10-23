@@ -8,10 +8,15 @@ public class Menu : MonoBehaviour
 	GameObject myObject;
 	Slider orbitSlider;
 	Slider speedSlider;
+	Slider planetSizeSlider;
+
 	float orbitVal;
 	float orbitPrevVal;
 	float speedVal;
 	float speedPrevVal;
+	float planetSizeVal;
+	float planetSizePrevVal;
+
 	PlanetParser p;
 	bool enabled = false;
 	// Use this for initialization
@@ -24,6 +29,11 @@ public class Menu : MonoBehaviour
 		speedSlider = GameObject.Find ("SpeedSlider").GetComponent<Slider> ();
 		this.speedVal = speedSlider.value;
 		this.speedPrevVal = this.speedVal;
+
+		planetSizeSlider = GameObject.Find ("PlanetSizeSlider").GetComponent<Slider> ();
+		this.planetSizeVal = planetSizeSlider.value;
+		this.planetSizePrevVal = this.planetSizeVal;
+
 
 		myObject = GameObject.FindGameObjectWithTag ("GameController");
 	 	this.p = myObject.GetComponent<Planets> ().p;
@@ -44,8 +54,15 @@ public class Menu : MonoBehaviour
 		this.speedPrevVal = this.speedVal;
 		this.speedVal = speedSlider.value;
 
+		this.planetSizePrevVal = this.planetSizeVal;
+		this.planetSizeVal = this.planetSizeSlider.value;
+
 		if (this.orbitVal != this.orbitPrevVal) {
 			this.p.setOrbitalScaleAll (this.orbitVal);
+		}
+
+		if (this.planetSizeVal != this.planetSizePrevVal) {
+			this.p.setSpeedValueAll (this.planetSizeVal);
 		}
 
 		if (this.speedVal != this.speedPrevVal) {
