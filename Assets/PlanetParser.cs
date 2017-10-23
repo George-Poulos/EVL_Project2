@@ -57,9 +57,10 @@ public class PlanetParser
 			}
 		}
 		foreach(var system in dict.Values) {
-			if(system.star.name != "Our Sun")
+			if(system.star.name != "Our Sun") {
 				system.set3dPosition(oneOffset);
 				system.solarSystem.SetActive(false);
+			}
 		}
 	}
 

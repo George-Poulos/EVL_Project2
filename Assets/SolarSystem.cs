@@ -19,6 +19,7 @@ public class SolarSystem
 		sideSystem.AddComponent<BoxCollider>();
 		var collider = sideSystem.GetComponent<BoxCollider>();
 		collider.isTrigger = true;
+		collider.size = this.star.get2dSize();
 
 		sideSystem.AddComponent<ToggleOnTrigger>();
 		var script = sideSystem.GetComponent<ToggleOnTrigger>();

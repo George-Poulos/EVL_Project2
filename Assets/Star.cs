@@ -180,6 +180,10 @@ public class Star
 		habZone.transform.localScale = new Vector3 ((endEdge - beginEdge)* this.radiusScale, 40.0F * PANEL_HEIGHT, 2.0F * PANEL_DEPTH);
 	}
 
+	public Vector3 get2dSize() {
+		return new Vector3(30, 4, 0.1F);
+	}
+
 	/**
 	 * Set Texture based on spectralType of the Star
 	 */

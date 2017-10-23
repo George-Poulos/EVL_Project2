@@ -149,7 +149,7 @@ public class Planets : MonoBehaviour {
 
 	void Start () {
 		p = new PlanetParser ("./Assets/Resources/planets.csv");
-		p.dict["Our Sun"].setOrbitScale(4.0F);
+		// p.dict["Our Sun"].setOrbitScale(4.0F);
 		p.sideMenu.updateMenu();
 		p.sideMenu.setMenuPosition(new Vector3(0, 50, 30));
 		p.sideMenu.updateMenu();
