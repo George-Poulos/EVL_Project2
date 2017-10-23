@@ -12,27 +12,13 @@ public class Menu2DController {
 		View = new GameObject("2dMenu");
 		View.transform.position = new Vector3(0, 0, 0);
 
-		Vector3 buttonScale = new Vector3(3, 3, 0.1F);
-
-		upPager = GameObject.CreatePrimitive(PrimitiveType.Cube);
-		upPager.name = "Page Up Button";
-		upPager.transform.parent = View.transform;
-		upPager.transform.localScale = buttonScale;
-		upPager.transform.localPosition = new Vector3(-25, -25, 0);
+		upPager = initButton("Page Up Button", new Vector3(-25, -25, 0), "↓");
 		upPager.AddComponent<PageUp>();
-		var collider = upPager.GetComponent<BoxCollider>();
-		collider.isTrigger = true;
 		var upScript = upPager.GetComponent<PageUp>();
 		upScript.menu = this;
 
-		downPager = GameObject.CreatePrimitive(PrimitiveType.Cube);
-		downPager.name = "Page Down Button";
-		downPager.transform.parent = View.transform;
-		downPager.transform.localScale = buttonScale;
-		downPager.transform.localPosition = new Vector3(-25, -20, 0);
+		downPager = initButton("Page Down Button", new Vector3(-25, -20, 0), "↑");
 		downPager.AddComponent<PageDown>();
-		collider = downPager.GetComponent<BoxCollider>();
-		collider.isTrigger = true;
 		var downScript = downPager.GetComponent<PageDown>();
 		downScript.menu = this;
 
@@ -40,6 +26,32 @@ public class Menu2DController {
 		visible = null;
 		ToggleOnTrigger.onEnter += ChangeVisible;
 		page = 0;
+	}
+
+	private GameObject initButton(string name, Vector3 position, string text) {
+		Vector3 buttonScale = new Vector3(3, 3, 0.1F);
+		var buttonMaterial = new Material(Shader.Find("Standard"));
+		buttonMaterial.mainTexture = Resources.Load("button") as Texture;
+
+		var ret = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		ret.name = name;
+		ret.transform.parent = View.transform;
+		ret.transform.localScale = buttonScale;
+		ret.transform.localPosition = position;
+		var collider = ret.GetComponent<BoxCollider>();
+		collider.isTrigger = true;
+		ret.GetComponent<MeshRenderer>().material = buttonMaterial;
+
+		var label = new GameObject();
+		label.transform.parent = ret.transform;	
+		label.transform.localPosition = new Vector3(-0.25F, 0.7F, 0);
+		label.name = name + " label";
+		label.transform.localScale = new Vector3(0.1F, 0.1F, 0.1F);
+		var labelMesh = label.AddComponent<TextMesh>();
+		labelMesh.text = text;
+		labelMesh.fontSize = 100;
+		labelMesh.color = Color.white;	
+		return ret;
 	}
 
 	public void updateMenu() {
