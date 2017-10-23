@@ -4,7 +4,7 @@ using UnityEngine;
 public class Planet
 {
 	public GameObject root, planet, orbit;
-	public GameObject sideRoot;
+	public GameObject sideRoot, sidePlanetText;
 
 	private float rotateScale = 0.2F;
 	private float distanceScale = 2.0F;
@@ -94,6 +94,14 @@ public class Planet
 		var planetMaterial = new Material (Shader.Find ("Standard"));
 		sideRoot.GetComponent<MeshRenderer>().material = planetMaterial;
 		planetMaterial.mainTexture = Resources.Load (texture) as Texture;
+
+		sidePlanetText = new GameObject("Planet Name");
+		sidePlanetText.transform.position = new Vector3(0, 0, 0);
+		sidePlanetText.transform.localScale = new Vector3(0.1F, 0.1F, 0.1F);
+		var planetTextMesh = sidePlanetText.AddComponent<TextMesh>();
+		planetTextMesh.text = this.planetLetter;
+		planetTextMesh.fontSize = 25;
+		sidePlanetText.transform.parent = sideRoot.transform;
 
 		sideRoot.transform.parent = flatParent.transform;
 	}
