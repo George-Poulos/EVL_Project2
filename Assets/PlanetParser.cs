@@ -73,6 +73,7 @@ public class PlanetParser
 			"G2V",
 			695700,
 			8,
+			"0",
 			universe.transform,
 			sideMenu.transform
 		);

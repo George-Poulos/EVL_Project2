@@ -4,10 +4,11 @@ using UnityEngine;
 public class Planet
 {
 	public GameObject root, planet, orbit;
+	public GameObject sideRoot;
 
 	private float rotateScale = 0.2F;
 	private float distanceScale = 2.0F;
-	private float planetSizeScale = 10000.0F;
+	private float sizeScale = 1.0F;
 	public float radiusOfPlanet; 
 	public float radiusOfOrbit;
 	public string planetLetter;
@@ -27,8 +28,13 @@ public class Planet
 	private const float YEAR_TO_DAYS = 365.2422F; 
 	private const float ORBIT_WIDTH = 0.01F;
 	private const float AVG_DENSITY = 1.33F;
+	private const float PANEL_Z = 0F;
+	private const float PANEL_WIDTH = 30.0F;
+	private const float PANEL_HEIGHT = 0.1F;
+	private const float PANEL_DEPTH = 0.1F;
+	private const float BASE_PLANET_SIZE = 10000F;
 
-	public Planet (string [] data, Star star, Transform parent)
+	public Planet (string [] data, Star star, Transform parent, Transform flatParent)
 	{
 		this.radiusOfOrbit = string.IsNullOrEmpty(data[9]) ? 0.0F : float.Parse (data [9]);
 		this.mass = string.IsNullOrEmpty(data[21]) ? 1.0F : float.Parse(data [21]);
@@ -42,9 +48,12 @@ public class Planet
 		this.errorMassRadius = setMassRadius();
 		setTexture ();
 		setupGameStuff(parent);
+		setup2dStuff(flatParent);
+		updateSize();
+		updateRadius();
 	}
 
-	public Planet(float radiusOfOrbit, float radiusOfPlanet, string planetLetter, string texture, float timeToOrbit, Star star, Transform parent) {
+	public Planet(float radiusOfOrbit, float radiusOfPlanet, string planetLetter, string texture, float timeToOrbit, Star star, Transform parent, Transform flatParent) {
 		this.radiusOfOrbit = radiusOfOrbit / AU_TO_KM;
 		this.radiusOfPlanet = radiusOfPlanet;
 		this.planetLetter = planetLetter;
@@ -52,11 +61,12 @@ public class Planet
 		this.star = star;
 		this.texture = texture;
 		setupGameStuff(parent);
+		setup2dStuff(flatParent);
+		updateSize();
+		updateRadius();
 	}
 
 	private void setupGameStuff(Transform parent) {
-		float scaledSize = this.radiusOfPlanet / this.planetSizeScale;
-
 		root = new GameObject(this.planetLetter + "Center");
 		root.AddComponent<rotate>();
 		updateRevoSpeed();
@@ -64,7 +74,6 @@ public class Planet
 		planet = GameObject.CreatePrimitive(PrimitiveType.Sphere);
 		planet.name = this.planetLetter;
 		planet.transform.position = new Vector3(0, 0, 0);
-		planet.transform.localScale = new Vector3(scaledSize, scaledSize, scaledSize);
 		planet.transform.parent = root.transform;
 
 		Material planetMaterial = new Material(Shader.Find("Standard"));
@@ -73,9 +82,31 @@ public class Planet
 
 		orbit = new GameObject(this.planetLetter + " orbit");
 		orbit.transform.parent = root.transform;
-		updateRadius();
 
 		root.transform.parent = parent;
+	}
+
+	private void setup2dStuff(Transform flatParent) {
+		sideRoot = GameObject.CreatePrimitive (PrimitiveType.Sphere);
+		sideRoot.name = this.planetLetter;
+		sideRoot.transform.position = new Vector3 (0, 0, 0);
+
+		var planetMaterial = new Material (Shader.Find ("Standard"));
+		sideRoot.GetComponent<MeshRenderer>().material = planetMaterial;
+		planetMaterial.mainTexture = Resources.Load (texture) as Texture;
+
+		sideRoot.transform.parent = flatParent.transform;
+	}
+
+	public void setSizeScale(float newScale) {
+		this.sizeScale = newScale;
+		updateSize();
+	}
+
+	private void updateSize() {
+		float size = this.radiusOfPlanet / BASE_PLANET_SIZE * this.sizeScale;
+		this.sideRoot.transform.localScale = new Vector3(size, size, 5.0F * PANEL_DEPTH);
+		this.planet.transform.localScale = new Vector3(size, size, size);
 	}
 
 	public void setOrbitScale(float newScale) {
@@ -113,6 +144,8 @@ public class Planet
 		line.useWorldSpace = false;
 
 		orbit.GetComponent<LineRenderer>().material.color = Color.white;
+
+		sideRoot.transform.localPosition = new Vector3 (-0.5F * PANEL_WIDTH + scaledRadius, 0, PANEL_Z);
 	}
 
 	private bool setMassRadius() {
