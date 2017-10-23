@@ -32,6 +32,7 @@ public class SolarSystem
 		this.numOfPlanets = star.numberOfPlanets;
 		solarSystem.transform.parent = parent;
 		sideSystem.transform.parent = sideView;
+		sideSystem.transform.position = new Vector3 (0, 8, 10.0F);
 	}
 
 	public void addPlanet(String[] planetItems){
