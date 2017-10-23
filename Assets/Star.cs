@@ -7,6 +7,8 @@ public class Star
 	public GameObject sideRoot, sideSun, sideSunText, habZone;
 	public float radiusScale = 2.0F;
 
+	public AudioSource clip = Resources.Load("lava") as AudioSource;
+
 	public float brightness;
 	public float mass;
 	public string name;
@@ -71,6 +73,14 @@ public class Star
 		sun.transform.localScale = new Vector3(sunSize, sunSize, sunSize);
 		sun.transform.parent = root.transform;
 		sun.GetComponent<rotate>().rotateSpeed = -0.25F;
+
+		clip = sun.AddComponent<AudioSource>();
+		clip.clip = Resources.Load("lava") as AudioClip;
+		clip.volume = 0.5F;
+		clip.spatialBlend = 4F;
+		clip.rolloffMode = AudioRolloffMode.Logarithmic;
+		clip.loop = true;
+		clip.Play();
 
 		Material sunMaterial = new Material(Shader.Find("Unlit/Texture"));
 		sun.GetComponent<MeshRenderer>().material = sunMaterial;
