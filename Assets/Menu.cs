@@ -68,18 +68,10 @@ public class Menu : MonoBehaviour
 		if (this.speedVal != this.speedPrevVal) {
 			this.p.setSpeedValueAll (this.speedVal);
 		}
-		
-		foreach (Transform child in this.transform)
-		{
-			if (Input.GetKey(KeyCode.Q))
-			{
-				child.gameObject.SetActive(false);
 
-			}
-			else if (Input.GetKey(KeyCode.E))
-			{
-				child.gameObject.SetActive(true);
-			}
-		}
+	}
+
+	void Activate(){
+		Debug.Log ("Hit Activate");
 	}
 }
