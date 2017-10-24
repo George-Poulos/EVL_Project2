@@ -46,7 +46,7 @@ public class Menu : MonoBehaviour
 		var systemDownScript = systemDownBtn.GetComponent<SystemDown>();
 		var planetUpScript = planetUpBtn.GetComponent<PlanetUp>();
 		var planetDownScript = planetDownBtn.GetComponent<PlanetDown>();
-		var resetScript = planetDownBtn.GetComponent<ResetView>();
+		var resetScript = resetViewBtn.GetComponent<ResetView>();
 		speedUpScript.menu = this;
 		speedDownScript.menu = this;
 		systemUpScript.menu = this;

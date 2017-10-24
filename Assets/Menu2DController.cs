@@ -85,7 +85,9 @@ public class Menu2DController {
 
 	public void resetView() {
 		this.page = 0;
-		visible.solarSystem.SetActive(false);
+		if (visible != null) {
+			visible.solarSystem.SetActive (false);
+		}
 		visible = null;
 		updateMenu();
 	}
