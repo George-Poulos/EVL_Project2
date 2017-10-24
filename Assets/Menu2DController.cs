@@ -38,6 +38,7 @@ public class Menu2DController {
 		ret.transform.parent = View.transform;
 		ret.transform.localScale = buttonScale;
 		ret.transform.localPosition = position;
+		ret.layer = 8;
 		var collider = ret.GetComponent<BoxCollider>();
 		collider.isTrigger = true;
 		ret.GetComponent<MeshRenderer>().material = buttonMaterial;
@@ -79,6 +80,15 @@ public class Menu2DController {
 
 	public void pgDown() {
 		this.page = (page == 0) ? 0 : page - 1;
+		updateMenu();
+	}
+
+	public void resetView() {
+		this.page = 0;
+		if (visible != null) {
+			visible.solarSystem.SetActive (false);
+		}
+		visible = null;
 		updateMenu();
 	}
 

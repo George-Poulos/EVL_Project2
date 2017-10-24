@@ -14,4 +14,10 @@ public class ToggleOnTrigger : MonoBehaviour {
             onEnter(target);
         }
     }
+
+    void Activate() {
+    	if(onEnter != null) {
+    		onEnter(target);
+    	}
+    }
 }

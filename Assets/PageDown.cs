@@ -8,4 +8,8 @@ public class PageDown : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		menu.pgDown();
     }
+
+    void Activate() {
+    	menu.pgDown();
+    }
 }
