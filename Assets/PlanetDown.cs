@@ -10,6 +10,6 @@ public class PlanetDown : MonoBehaviour {
 	}
 
 	void Activate() {
-		menu.planetDown ();
+		menu.planetDown();
 	}
 }

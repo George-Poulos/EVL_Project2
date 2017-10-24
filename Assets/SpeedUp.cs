@@ -10,6 +10,6 @@ public class SpeedUp : MonoBehaviour {
 	}
 
 	void Activate() {
-		menu.speedUp ();
+		menu.speedUp();
 	}
 }

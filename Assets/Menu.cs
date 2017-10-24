@@ -8,9 +8,12 @@ public class Menu : MonoBehaviour
 	GameObject myObject;
 
 
-	Button speedUpBtn;
-	Button speedDownBtn;
-
+	GameObject speedUpBtn = GameObject.FindGameObjectWithTag("speedUp");
+	GameObject speedDownBtn = GameObject.FindGameObjectWithTag("speedDown");
+	GameObject systemUpBtn = GameObject.FindGameObjectWithTag("systemUp");
+	GameObject systemDownBtn = GameObject.FindGameObjectWithTag("systemDown");
+	GameObject planetUpBtn = GameObject.FindGameObjectWithTag("planetUp");
+	GameObject planetDownBtn = GameObject.FindGameObjectWithTag("planetDown");
 
 	SteamVR_Controller.Device Controller;
 
@@ -22,6 +25,21 @@ public class Menu : MonoBehaviour
 	float planetSizePrevVal;
 
 	PlanetParser p;
+
+	public Menu(){
+		var speedUpScript = speedUpBtn.GetComponent<SpeedUp>();
+		var speedDownScript = speedDownBtn.GetComponent<SpeedUp>();
+		var systemUpScript = systemUpBtn.GetComponent<SpeedUp>();
+		var systemDownScript = systemDownBtn.GetComponent<SpeedUp>();
+		var planetUpScript = planetUpBtn.GetComponent<SpeedUp>();
+		var planetDownScript = planetDownBtn.GetComponent<SpeedUp>();
+		speedUpScript.menu = this;
+		speedDownScript.menu = this;
+		systemUpScript.menu = this;
+		systemDownScript.menu = this;
+		planetUpScript.menu = this;
+		planetDownScript.menu = this;
+	}
 
 	// Use this for initialization
 	void Start ()

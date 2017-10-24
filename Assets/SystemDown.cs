@@ -10,6 +10,6 @@ public class SystemDown : MonoBehaviour {
 	}
 
 	void Activate() {
-		menu.scaleSystemDown ();
+		menu.scaleSystemDown();
 	}
 }

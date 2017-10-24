@@ -10,6 +10,6 @@ public class SystemUp : MonoBehaviour {
 	}
 
 	void Activate() {
-		menu.scaleSystemUp ();
+		menu.scaleSystemUp();
 	}
 }
