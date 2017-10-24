@@ -14,6 +14,7 @@ public class Menu : MonoBehaviour
 	GameObject systemDownBtn;
 	GameObject planetUpBtn;
 	GameObject planetDownBtn;
+	GameObject resetViewBtn;
 
 	SteamVR_Controller.Device Controller;
 
@@ -32,6 +33,7 @@ public class Menu : MonoBehaviour
 	{
 		this.myObject = GameObject.FindGameObjectWithTag ("GameController");
 		this.p = myObject.GetComponent<Planets> ().p;
+		resetViewBtn = GameObject.FindGameObjectWithTag("Reset");
 		speedUpBtn = GameObject.FindGameObjectWithTag("speedUp");
 		speedDownBtn = GameObject.FindGameObjectWithTag("speedDown");
 		systemUpBtn = GameObject.FindGameObjectWithTag("systemUp");
@@ -44,12 +46,14 @@ public class Menu : MonoBehaviour
 		var systemDownScript = systemDownBtn.GetComponent<SystemDown>();
 		var planetUpScript = planetUpBtn.GetComponent<PlanetUp>();
 		var planetDownScript = planetDownBtn.GetComponent<PlanetDown>();
+		var resetScript = planetDownBtn.GetComponent<ResetView>();
 		speedUpScript.menu = this;
 		speedDownScript.menu = this;
 		systemUpScript.menu = this;
 		systemDownScript.menu = this;
 		planetUpScript.menu = this;
 		planetDownScript.menu = this;
+		resetScript.menu = this;
 	}
 		
 
@@ -86,17 +90,22 @@ public class Menu : MonoBehaviour
 	}
 
 	public void planetUp(){
-		this.planetSizeVal += 1.0F;
+		this.planetSizeVal += 0.1F;
 		p.setSizeScaleAll (this.planetSizeVal);
 	}
 
 	public void planetDown(){
-		this.planetSizeVal -= 1.0F;
-		if (this.planetSizeVal < 1.0F) {
-			this.planetSizeVal = 1.0F;
+		this.planetSizeVal -= 0.1F;
+		if (this.planetSizeVal < 0.1F) {
+			this.planetSizeVal = 0.1F;
 		}
 		p.setSizeScaleAll (this.planetSizeVal);
 	}
+
+	public void resetView(){
+		this.p.sideMenu.resetView ();
+	}
+
 		
 	void Activate(){
 		Debug.Log ("Hit Activate");
