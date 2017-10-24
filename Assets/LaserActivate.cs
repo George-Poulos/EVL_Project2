@@ -68,6 +68,8 @@ public class LaserActivate : MonoBehaviour
                 ShowLaser(hit);
 
                 shouldActivate = true;
+            } else {
+                laser.SetActive(false);
             }
         }
         else // Touchpad not held down, hide laser & teleport reticle

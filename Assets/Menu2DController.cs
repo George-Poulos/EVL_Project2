@@ -83,6 +83,13 @@ public class Menu2DController {
 		updateMenu();
 	}
 
+	public void resetView() {
+		this.page = 0;
+		visible.solarSystem.SetActive(false);
+		visible = null;
+		updateMenu();
+	}
+
 	public void addSolarSystem(SolarSystem system) {
 		menu.Add(system);
 	}
