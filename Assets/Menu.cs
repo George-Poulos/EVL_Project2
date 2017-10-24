@@ -104,6 +104,9 @@ public class Menu : MonoBehaviour
 
 	public void resetView(){
 		this.p.sideMenu.resetView ();
+		p.setSizeScaleAll (1.0F);
+		p.setOrbitalScaleAll (2.0F);
+		p.setSpeedValueAll (0.2F);
 	}
 
 		
