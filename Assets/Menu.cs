@@ -31,11 +31,11 @@ public class Menu : MonoBehaviour
 	void Start ()
 	{
 		var speedUpScript = speedUpBtn.GetComponent<SpeedUp>();
-		var speedDownScript = speedDownBtn.GetComponent<SpeedUp>();
-		var systemUpScript = systemUpBtn.GetComponent<SpeedUp>();
-		var systemDownScript = systemDownBtn.GetComponent<SpeedUp>();
-		var planetUpScript = planetUpBtn.GetComponent<SpeedUp>();
-		var planetDownScript = planetDownBtn.GetComponent<SpeedUp>();
+		var speedDownScript = speedDownBtn.GetComponent<SpeedDown>();
+		var systemUpScript = systemUpBtn.GetComponent<SystemUp>();
+		var systemDownScript = systemDownBtn.GetComponent<SystemDown>();
+		var planetUpScript = planetUpBtn.GetComponent<PlanetUp>();
+		var planetDownScript = planetDownBtn.GetComponent<PlanetDown>();
 		speedUpScript.menu = this;
 		speedDownScript.menu = this;
 		systemUpScript.menu = this;
