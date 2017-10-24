@@ -38,12 +38,12 @@ public class Menu : MonoBehaviour
 	}
 
 	public void scaleSystemUp(){
-		this.orbitVal += 0.5F;
+		this.orbitVal += 1.0F;
 		p.setOrbitalScaleAll (this.orbitVal);
 	}
 
 	public void scaleSystemDown(){
-		this.orbitVal -= 0.5F;
+		this.orbitVal -= 1.0F;
 		if (this.orbitVal < 0.1F) {
 			this.orbitVal = 0.1F;
 		}
