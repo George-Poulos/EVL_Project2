@@ -26,7 +26,10 @@ public class Menu : MonoBehaviour
 
 	PlanetParser p;
 
-	public Menu(){
+
+	// Use this for initialization
+	void Start ()
+	{
 		var speedUpScript = speedUpBtn.GetComponent<SpeedUp>();
 		var speedDownScript = speedDownBtn.GetComponent<SpeedUp>();
 		var systemUpScript = systemUpBtn.GetComponent<SpeedUp>();
@@ -39,12 +42,6 @@ public class Menu : MonoBehaviour
 		systemDownScript.menu = this;
 		planetUpScript.menu = this;
 		planetDownScript.menu = this;
-	}
-
-	// Use this for initialization
-	void Start ()
-	{
-		
 	}
 		
 
