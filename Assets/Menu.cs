@@ -30,6 +30,8 @@ public class Menu : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+		this.myObject = GameObject.FindGameObjectWithTag ("GameController");
+		this.p = myObject.GetComponent<Planets> ().p;
 		speedUpBtn = GameObject.FindGameObjectWithTag("speedUp");
 		speedDownBtn = GameObject.FindGameObjectWithTag("speedDown");
 		systemUpBtn = GameObject.FindGameObjectWithTag("systemUp");
@@ -95,13 +97,7 @@ public class Menu : MonoBehaviour
 		}
 		p.setSizeScaleAll (this.planetSizeVal);
 	}
-
-
-
-
-
-
-
+		
 	void Activate(){
 		Debug.Log ("Hit Activate");
 
