@@ -8,12 +8,12 @@ public class Menu : MonoBehaviour
 	GameObject myObject;
 
 
-	GameObject speedUpBtn = GameObject.FindGameObjectWithTag("speedUp");
-	GameObject speedDownBtn = GameObject.FindGameObjectWithTag("speedDown");
-	GameObject systemUpBtn = GameObject.FindGameObjectWithTag("systemUp");
-	GameObject systemDownBtn = GameObject.FindGameObjectWithTag("systemDown");
-	GameObject planetUpBtn = GameObject.FindGameObjectWithTag("planetUp");
-	GameObject planetDownBtn = GameObject.FindGameObjectWithTag("planetDown");
+	GameObject speedUpBtn;
+	GameObject speedDownBtn;
+	GameObject systemUpBtn;
+	GameObject systemDownBtn;
+	GameObject planetUpBtn;
+	GameObject planetDownBtn;
 
 	SteamVR_Controller.Device Controller;
 
@@ -30,6 +30,12 @@ public class Menu : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+		speedUpBtn = GameObject.FindGameObjectWithTag("speedUp");
+		speedDownBtn = GameObject.FindGameObjectWithTag("speedDown");
+		systemUpBtn = GameObject.FindGameObjectWithTag("systemUp");
+		systemDownBtn = GameObject.FindGameObjectWithTag("systemDown");
+		planetUpBtn = GameObject.FindGameObjectWithTag("planetUp");
+		planetDownBtn = GameObject.FindGameObjectWithTag("planetDown");
 		var speedUpScript = speedUpBtn.GetComponent<SpeedUp>();
 		var speedDownScript = speedDownBtn.GetComponent<SpeedDown>();
 		var systemUpScript = systemUpBtn.GetComponent<SystemUp>();
